@@ -8,7 +8,7 @@ const styles = {
     margin: 5,
     height:35,
     backgroundColor: '#C00000',
-    width:80,
+    width:160,
     justifyContent: 'center'
   }
 }
@@ -18,12 +18,14 @@ export default class PawnTicket extends React.Component {
     super(props)
 
     this.state = {
+      navigation: props.navigation,
+      _id: props._id,
       userId: props.userId,
       itemId: props.itemId,
       itemName: props.itemName,
       ticketNumber: props.ticketNumber,
-      dateCreated: props.dateCreated,
-      expiryDate: props.expiryDate,
+      dateCreated: new Date(props.dateCreated),
+      expiryDate: new Date(props.expiryDate),
       interestPayable: props.interestPayable,
       offeredValue: props.offeredValue,
       specifiedValue: props.specifiedValue,
@@ -31,7 +33,6 @@ export default class PawnTicket extends React.Component {
     }
   }
   getTimePassed(dateCreated, expiryDate){
-
     //find number of milliseconds in days
     var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
 
@@ -131,15 +132,11 @@ export default class PawnTicket extends React.Component {
                     //Buttons container
                     <CardItem style={{justifyContent: 'center'}}>
                       //Renew Now Button
-                      <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('renew')}>
-                        <Text style={{fontSize: 16, color: '#ffffff', }}>Renew Now</Text>
-                      </Button>
-
-                      //Value Button
-                      <Button style={styles.buttonStyle}>
-                        <Text style={{fontSize: 16, color: '#ffffff', }}>Value</Text>
+                      <Button style={styles.buttonStyle} onPress={() => this.state.navigation.navigate('TicketApproval', {stateOfTicket: this.state})}>
+                        <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
                       </Button>
                     </CardItem>
+
                   </Body>
 
               </CardItem>

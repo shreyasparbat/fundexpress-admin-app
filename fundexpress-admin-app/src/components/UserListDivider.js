@@ -22,7 +22,8 @@ export default class UserListDivider extends Component {
     this.state = {
         userList: props.userList,
         dataSource: ds.cloneWithRowsAndSections({}),
-        loading: true
+        loading: true,
+        navigation: props.navigation
     };
   }
 
@@ -57,8 +58,10 @@ export default class UserListDivider extends Component {
     ];
     var max = dataSource.length
     for (i=0; i<max;i++){
-      var firstLetter= dataSource[i].fullName.substring(0,1);
+      var firstLetter= dataSource[i].fullName.substring(0,1).toUpperCase();
+      console.log('this firstLetter is ' + firstLetter);
       var index = firstLetter.charCodeAt(0)-65;
+      console.log('this index is '+index);
       alphabets[index].value = true;
     }
     var result = [];
@@ -89,7 +92,7 @@ export default class UserListDivider extends Component {
               <Text>{this.getArrayOfDividers(this.state.userList).dataSource[rowID]}</Text>
 
             </ListItem>
-            <UserListItem currentLetter={this.getArrayOfDividers(this.state.userList).dataSource[rowID]} userList={this.state.userList}/>
+            <UserListItem navigation={this.state.navigation} currentLetter={this.getArrayOfDividers(this.state.userList).dataSource[rowID]} userList={this.state.userList}/>
         </List>
       );
   }

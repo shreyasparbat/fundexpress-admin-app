@@ -6,8 +6,15 @@ import { Input } from './components/Input';
 
 import HomeScreen from './Home';
 import UserSettingsScreen from './UserSettings';
-import TicketApprovalScreen from './TicketApproval';
+import TicketApprovalScreen from './TicketScreens/TicketApproval';
 import UserHistoryScreen from './UserHistory';
+import List from './components/List';
+import UserListDivider from './components/UserListDivider';
+import UserListItem from './components/UserListItem';
+import Tickets from './components/Tickets';
+import LogOutButton from './components/LogOutButton';
+import AllPawnTicketScreens from './components/AllPawnTicketScreens'
+import AllSellTicketScreens from './components/AllSellTicketScreens'
 
 class LoginScreen extends React.Component {
   state = { email: '', password: '', error: '', loading: false, auth: '' };
@@ -68,7 +75,6 @@ class LoginScreen extends React.Component {
     console.log('login pressed')
     console.log(this.state.email)
     console.log(this.state.password)
-    //const { email, password } = this.state;
 
     this.setState({ error: '', loading: true });
 
@@ -181,9 +187,11 @@ const styles = StyleSheet.create({
 });
 
 const RootStack = createStackNavigator({
+    LogOut : {screen: LogOutButton},
     loginFlow : {
       screen: createStackNavigator({
         login: { screen: LoginScreen },
+        LogOut : {screen: LogOutButton},
       }),
       navigationOptions: {
         header: null,
@@ -194,13 +202,21 @@ const RootStack = createStackNavigator({
       screen: createStackNavigator({
         main:{screen: HomeScreen},
         UserHistory: {screen: UserHistoryScreen},
+        Tickets: {screen: Tickets},
+        AllPawnTickets: {screen: AllPawnTicketScreens},
+        AllSellTickets: {screen: AllSellTicketScreens},
+        LogOut : {screen: LogOutButton},
+        TicketApproval: {screen: TicketApprovalScreen},
       }),
       navigationOptions: {
-        header: null,
-        initialRouteName: 'loginFlow',
-        tabBarIcon: ({ focused, tintColor }) => {
-          return <Ionicons name={'md-home'} size={25}
-          color={'white'} />;
+        header:null,
+        headerStyle: {
+          backgroundColor: '#C00000',
+        },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: '#ffffff'
         },
       }},
     },
@@ -223,14 +239,5 @@ const RootStack = createStackNavigator({
 
 
   }
-);
-const LogOutButton = ({ onPress }) => (
-  <Button
-      title='Log Out'
-      color='white'
-      backgroundColor='#FF0000'
-      onPress={() => this.logOut()}
-      style= {{height: 10, width:10,}}
-    />
 );
 export default RootStack;

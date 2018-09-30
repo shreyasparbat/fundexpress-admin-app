@@ -7,7 +7,7 @@ const styles = {
   buttonStyle: {
     height:35,
     backgroundColor: '#C00000',
-    width:80,
+    width:160,
     justifyContent: 'center'
   }
 }
@@ -17,11 +17,12 @@ export default class SellTicket extends React.Component {
     super(props)
 
     this.state = {
+      navigation: props.navigation,
       userId: props.userId,
       itemId: props.itemId,
       itemName: props.itemName,
       ticketNumber: props.ticketNumber,
-      dateCreated: props.dateCreated,
+      dateCreated: new Date(props.dateCreated),
       value: props.value,
       approvalStatus: props.approvalStatus
     }
@@ -72,9 +73,9 @@ export default class SellTicket extends React.Component {
                     //Buttons container
                     <View style={{alignSelf: 'center'}}>
                     <CardItem>
-                      //Value Button
-                      <Button style={styles.buttonStyle}>
-                        <Text style={{fontSize: 16, color: '#ffffff', }}>Value</Text>
+                      //Value Button]
+                      <Button style={styles.buttonStyle} onPress={() => this.state.navigation.navigate('TicketApproval', {stateOfTicket: this.state})}>
+                        <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
                       </Button>
                     </CardItem>
                     </View>

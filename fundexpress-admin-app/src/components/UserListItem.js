@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ListView } from 'react-native';
 import { Container, Content, List, ListItem } from 'native-base';
 import { Button } from 'react-native-elements';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import RootStack from '../Login';
 
 export default class UserListItem extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ export default class UserListItem extends Component {
         userList: props.userList,
         dataSource: ds.cloneWithRowsAndSections({}),
         currentLetter: props.currentLetter,
+        navigation: props.navigation
     };
 
   }
@@ -29,23 +32,25 @@ export default class UserListItem extends Component {
     for (i=0; i<max;i++){
       var firstLetter= userList[i].fullName.substring(0,1);
       if (firstLetter===letter){
-        result.push(userList[i].fullName);
+        result.push(userList[i]);
       }
     }
+    result.sort((a,b) => b.fullName < a.fullName ? 1 : -1);
     return {dataSource: result};
   }
   componentDidMount(){
 
       this.setState({
-          dataSource: this.state.dataSource.cloneWithRowsAndSections(this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList))
+          dataSource: this.state.dataSource.cloneWithRowsAndSections(this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList)),
       });
   }
 
   renderRow(rowData: string, sectionID: number, rowID: number) {
-
+      var currentUser = this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList).dataSource[rowID];
+      console.log(currentUser);
       return (
             <ListItem>
-              <Text>{this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList).dataSource[rowID]}</Text>
+              <Text  onPress={() => this.state.navigation.navigate('Tickets', {currentUser: currentUser})}>{currentUser.fullName}</Text>
             </ListItem>
       );
   }

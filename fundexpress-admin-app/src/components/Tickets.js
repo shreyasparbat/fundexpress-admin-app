@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, Text, AsyncStorage, ActivityIndicator } from 'react-native';
-import UserListDivider from './UserListDivider';
+import PawnTicket from './PawnTicket';
+import UserHistoryScreen from '../UserHistory';
 
-export default class List extends React.Component {
-  render(){
-    return(<UserListDivider userList={userList}/>);
-  }
+export default class Tickets extends React.Component {
   constructor(props){
     super(props)
     console.log("1. construction");
     this.state={
-      arrayOfUsers: [],
+      allTickets: {},
       loading: false,
       navigation: props.navigation
     }
@@ -18,25 +16,32 @@ export default class List extends React.Component {
 
   }
   componentWillMount(){
+    const currentUserID = this.state.navigation.getParam('currentUser', {})._id;
+    console.log('userID: '+ currentUserID);
+
     console.log("3. set the state method");
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
-      fetch('http://206.189.145.2:3000/admin/allUsers', {
-      method: 'GET',
+      fetch('http://206.189.145.2:3000/admin/tickets', {
+      method: 'POST',
       headers: new Headers({
-        'x-auth' : token,
-      })
+        "Content-Type": "application/json",
+        "x-auth" : token,
+      }),
+      body: JSON.stringify({"userID": currentUserID}),
     })
       .then((response) => {
+        console.log(response);
         if (response.ok) {
           return response.json()
         } else {
-          return Promise.reject(response.json())
+          console.log("promise rejected");
+          //return Promise.reject(response.json())
         }
       })
       .then((responseJson) => {
-        this.setState({arrayOfUsers : responseJson.allUsers});
+        this.setState({allTickets : responseJson});
         this.setState({loading:false});
       })
       .catch((errorResponse) => {
@@ -59,7 +64,8 @@ export default class List extends React.Component {
 
   renderThisArray(){
     console.log("5. rendering the array");
-    return <UserListDivider navigation={this.state.navigation} userList={this.state.arrayOfUsers.sort()}/>
+    console.log(this.state.allTickets);
+    return <UserHistoryScreen navigation={this.state.navigation} ticket={this.state.allTickets}/>
   }
 
   render(){

@@ -8,7 +8,7 @@ import { createStackNavigator } from 'react-navigation';
 
 export default class AllPawnTicketScreens extends React.Component {
   static navigationOptions = {
-    title: "User Tickets",
+    title: "Pawn Tickets",
       headerStyle: {
         backgroundColor: "#C00000",
       },
@@ -30,13 +30,13 @@ export default class AllPawnTicketScreens extends React.Component {
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <Container>
           <Tabs>
-            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Pawn Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Current</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
               <PawnTicketScreen navigation={this.state.navigation} tickets={allTickets.currentPawnTickets}/>
             </Tab>
-            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Pawn Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Pending</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
               <PawnTicketScreen navigation={this.state.navigation} tickets={allTickets.pawnTicketsPendingApproval}/>
             </Tab>
-            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Pawn Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='ticket'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Expired</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
               <PawnTicketScreen navigation={this.state.navigation} tickets={allTickets.expiredPawnTickets}/>
             </Tab>
           </Tabs>

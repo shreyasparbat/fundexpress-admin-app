@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import PawnTicketScreen from './components/AllPawnTicketScreens';
-import SellTicketScreen from './components/AllSellTicketScreens';
+import PawnTicketScreen from './TicketScreens/AllPawnTicketScreens';
+import SellTicketScreen from './TicketScreens/AllSellTicketScreens';
 import { Container, Header, Tab, Tabs, TabHeading} from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 import LogOutButton from './components/LogOutButton';
@@ -10,10 +10,10 @@ import LogOutButton from './components/LogOutButton';
 
 
 export default class UserHistoryScreen extends React.Component {
-
   static navigationOptions = {
-    title: 'Home',
-    headerLeft:<LogOutButton/>,
+    title: 'User History',
+
+    headerLeft:null,
       headerStyle: {
         backgroundColor: '#C00000',
       },

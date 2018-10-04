@@ -47,7 +47,7 @@ export default class UserListItem extends Component {
 
   renderRow(rowData: string, sectionID: number, rowID: number) {
       var currentUser = this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList).dataSource[rowID];
-      console.log(currentUser);
+      // console.log(currentUser);
       return (
             <ListItem>
               <Text  onPress={() => this.state.navigation.navigate('Tickets', {currentUser: currentUser})}>{currentUser.fullName}</Text>

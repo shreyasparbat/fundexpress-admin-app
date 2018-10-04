@@ -8,7 +8,7 @@ import { createStackNavigator } from 'react-navigation';
 
 export default class AllSellTicketScreens extends React.Component {
   static navigationOptions = {
-    title: "User Tickets",
+    title: "Sell Tickets",
       headerStyle: {
         backgroundColor: "#C00000",
       },
@@ -30,10 +30,10 @@ export default class AllSellTicketScreens extends React.Component {
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <Container>
           <Tabs>
-            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='dollar'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Sell Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='dollar'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Approved</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
               <SellTicketScreen tickets={allTickets.approvedSellTickets}/>
             </Tab>
-            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='dollar'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Sell Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+            <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='dollar'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}>Pending</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
               <SellTicketScreen tickets={allTickets.sellTicketPendingApproval}/>
             </Tab>
           </Tabs>

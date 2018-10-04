@@ -59,6 +59,7 @@ export default class List extends React.Component {
 
   renderThisArray(){
     console.log("5. rendering the array");
+    console.log("first user in array of users is " + this.state.arrayOfUsers[0])
     return <UserListDivider navigation={this.state.navigation} userList={this.state.arrayOfUsers.sort()}/>
   }
 

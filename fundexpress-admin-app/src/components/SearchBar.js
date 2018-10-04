@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
-import { View, Button, Text} from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { View,  Text} from 'react-native';
+import { Button, SearchBar } from 'react-native-elements';
 import {Icon, Item } from 'native-base';
 import UserListDivider from './UserListDivider';
 
 export default class SearchBarItem extends Component {
-  state = {query : ""};
+  constructor(props){
+    super(props)
+
+    this.state={
+      query : "",
+      users: props.users,
+      navigation: props.navigation,
+    }
+  }
+
+  onSearch(){
+
+  }
+
 
 
   render() {
@@ -15,6 +28,12 @@ export default class SearchBarItem extends Component {
           lightTheme
           onChangeText={query => this.setState({ query })}
           placeholder='Type Here...' />
+        <Button
+          onPress={() => this.onSearch()}
+          icon={
+            <Icon name={'search'} />
+          }
+        />
       </View>
     );
   }

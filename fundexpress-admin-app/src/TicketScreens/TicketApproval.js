@@ -29,6 +29,7 @@ export default class TicketApprovalScreen extends React.Component{
   };
   componentWillMount(){
     console.log("3. set the state method");
+    console.log("pawnTicketID is :"+this.state.stateOfTicket._id)
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
@@ -40,9 +41,12 @@ export default class TicketApprovalScreen extends React.Component{
       body: JSON.stringify({'pawnTicketID': this.state.stateOfTicket._id})
     })
       .then((response) => {
+        console.log("Response.ok: " +response.ok);
         if (response.ok) {
+          console.log(response.json());
           return response.json()
         } else {
+          console.log("promise rejected");
           return Promise.reject(response.json())
         }
       })

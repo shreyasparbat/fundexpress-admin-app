@@ -6,6 +6,9 @@ export default class LogOutButton extends React.Component{
 
   constructor(props){
     super(props)
+    this.state={
+      navigation: props.navigation
+    }
   }
   retrieveData = async () => {
     try {
@@ -28,7 +31,7 @@ export default class LogOutButton extends React.Component{
         if (response.ok) {
           //return response
           console.log('logged out')
-          this.props.navigation.navigate('login');
+          this.state.navigation.navigate('login');
         } else {
           return Promise.reject(response.json())
         }
@@ -45,15 +48,12 @@ export default class LogOutButton extends React.Component{
   render(){
     return(
       <View>
-      <View style={{width: 100}} >
         <Button
           title='Log Out'
           color='white'
           backgroundColor='#C00000'
           onPress={() => this.logOut()}
-          //onPress={() => goBack()}
         />
-      </View>
       </View>
     );
   }

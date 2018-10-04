@@ -59,9 +59,9 @@ export default class UserListDivider extends Component {
     var max = dataSource.length
     for (i=0; i<max;i++){
       var firstLetter= dataSource[i].fullName.substring(0,1).toUpperCase();
-      console.log('this firstLetter is ' + firstLetter);
+      //console.log('this firstLetter is ' + firstLetter);
       var index = firstLetter.charCodeAt(0)-65;
-      console.log('this index is '+index);
+      //console.log('this index is '+index);
       alphabets[index].value = true;
     }
     var result = [];

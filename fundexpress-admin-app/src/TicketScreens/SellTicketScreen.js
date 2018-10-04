@@ -2,7 +2,7 @@
 import React from 'react';
 import { Image, Text, Linking, ListView, View, TouchableOpacity, FlatList } from 'react-native';
 import { Container,  Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body } from 'native-base';
-import SellTicket from './SellTicket';
+import SellTicket from '../components/SellTicket';
 
 export default class SellTicketScreen extends React.Component {
   static navigationOptions = {
@@ -49,6 +49,7 @@ export default class SellTicketScreen extends React.Component {
       return (
         <SellTicket
           navigation={this.state.navigation}
+          _id={sellTickets.dataSource[rowID]._id}
           userId={sellTickets.dataSource[rowID].userId}
           itemId={sellTickets.dataSource[rowID].itemId}
           itemName={sellTickets.dataSource[rowID].itemName}

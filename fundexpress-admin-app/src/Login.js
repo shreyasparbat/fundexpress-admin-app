@@ -13,8 +13,8 @@ import UserListDivider from './components/UserListDivider';
 import UserListItem from './components/UserListItem';
 import Tickets from './components/Tickets';
 import LogOutButton from './components/LogOutButton';
-import AllPawnTicketScreens from './components/AllPawnTicketScreens'
-import AllSellTicketScreens from './components/AllSellTicketScreens'
+import AllPawnTicketScreens from './TicketScreens/AllPawnTicketScreens'
+import AllSellTicketScreens from './TicketScreens/AllSellTicketScreens'
 
 class LoginScreen extends React.Component {
   state = { email: '', password: '', error: '', loading: false, auth: '' };

@@ -4,6 +4,24 @@ import PawnTicket from './PawnTicket';
 import UserHistoryScreen from '../UserHistory';
 
 export default class Tickets extends React.Component {
+  static navigationOptions = {
+    title: 'User History',
+
+    headerLeft:null,
+      headerStyle: {
+        backgroundColor: '#C00000',
+      },
+      headerTintColor: '#ffffff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: '#ffffff'
+      },
+      tabBarIcon: ({ focused, tintColor }) => {
+        return <Ionicons name={'md-home'} size={25}
+        color={'white'} />;
+      },
+
+  };
   constructor(props){
     super(props)
     console.log("1. construction");
@@ -12,14 +30,14 @@ export default class Tickets extends React.Component {
       loading: false,
       navigation: props.navigation
     }
-    console.log("2. this state is initialised");
+    console.log("2. tickets: this state is initialised");
 
   }
   componentWillMount(){
     const currentUserID = this.state.navigation.getParam('currentUser', {})._id;
     console.log('userID: '+ currentUserID);
 
-    console.log("3. set the state method");
+    console.log("3. tickets: set the state method");
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
@@ -32,7 +50,7 @@ export default class Tickets extends React.Component {
       body: JSON.stringify({"userID": currentUserID}),
     })
       .then((response) => {
-        console.log(response);
+        console.log("Response.ok: " +response.ok);
         if (response.ok) {
           return response.json()
         } else {
@@ -55,7 +73,7 @@ export default class Tickets extends React.Component {
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
+      console.log("4. tickets token retrieved " + value);
       return value;
     } catch (error){
       throw error
@@ -64,7 +82,7 @@ export default class Tickets extends React.Component {
 
   renderThisArray(){
     console.log("5. rendering the array");
-    console.log(this.state.allTickets);
+    console.log("First ticket in current pawn tickets array: " + this.state.allTickets.pawnTicketsPendingApproval[0]);
     return <UserHistoryScreen navigation={this.state.navigation} ticket={this.state.allTickets}/>
   }
 

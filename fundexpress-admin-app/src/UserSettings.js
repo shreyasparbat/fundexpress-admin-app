@@ -55,7 +55,7 @@ export default class UserSettingsScreen extends React.Component {
   }
   submit() {
     this.retrieveData().then((token) => {
-      fetch('http://206.189.145.2:3000/profile/edit',{
+      fetch('http://206.189.145.2:3000/admin/getUser',{
         method: 'POST',
         headers: new Headers({
           'x-auth': token,

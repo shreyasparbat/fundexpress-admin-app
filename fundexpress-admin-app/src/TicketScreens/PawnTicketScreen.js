@@ -2,7 +2,7 @@
 import React from 'react';
 import { Image, Text, Linking, ListView, View, TouchableOpacity, FlatList } from 'react-native';
 import { Container,  Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body } from 'native-base';
-import PawnTicket from './PawnTicket';
+import PawnTicket from '../components/PawnTicket';
 
 
 export default class PawnTicketScreen extends React.Component {

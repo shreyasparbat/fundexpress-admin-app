@@ -18,6 +18,7 @@ export default class SellTicket extends React.Component {
 
     this.state = {
       navigation: props.navigation,
+      _id: props._id,
       userId: props.userId,
       itemId: props.itemId,
       itemName: props.itemName,
@@ -50,7 +51,7 @@ export default class SellTicket extends React.Component {
 
                     //
                     <View style={{marginBottom: 10}}>
-                      <Text style={{fontSize:25}}>Ticket #{this.state.ticketNumber}</Text>
+                      <Text style={{fontSize:25}}>Ticket #{this.state._id}</Text>
                       <Text note>{this.state.itemName}</Text>
                     </View>
 
@@ -73,11 +74,11 @@ export default class SellTicket extends React.Component {
                     //Buttons container
                     <View style={{alignSelf: 'center'}}>
                     <CardItem>
-                      //Value Button]
+                      //Value Button
                       <Button style={styles.buttonStyle} onPress={() => this.state.navigation.navigate('TicketApproval', {stateOfTicket: this.state})}>
                         <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
                       </Button>
-                    </CardItem>
+                    </CardItem>z
                     </View>
                   </Body>
 

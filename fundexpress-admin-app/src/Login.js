@@ -2,19 +2,55 @@ import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, navigationOptions } from 'react-navigation';
 import { Button } from 'react-native-elements';
-import { Input } from './components/Input';
 
+//custom components
+import { Input } from './components/Input';
+import LogOutButton from './components/LogOutButton';
+
+//icon imports
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from './Home';
-import UserSettingsScreen from './UserSettings';
-import TicketApprovalScreen from './TicketScreens/TicketApproval';
-import UserHistoryScreen from './UserHistory';
+
+//user related
 import List from './components/List';
 import UserListDivider from './components/UserListDivider';
 import UserListItem from './components/UserListItem';
-import Tickets from './components/Tickets';
-import LogOutButton from './components/LogOutButton';
-import AllPawnTicketScreens from './TicketScreens/AllPawnTicketScreens'
-import AllSellTicketScreens from './TicketScreens/AllSellTicketScreens'
+import UserSettingsScreen from './UserSettings';
+
+//ticket related
+import UserHistoryScreen from './TicketScreens/UserHistory';
+import AllPawnTicketScreen from './TicketScreens/AllPawnTickets';
+import AllSellTicketScreen from './TicketScreens/AllSellTickets';
+import PawnTicket from './components/PawnTicket';
+import SellTicket from './components/SellTicket';
+
+//pawn tickets: approval/rejection
+import PawnTicketApprovalScreen from './TicketScreens/PawnTickets/PawnTicketApproval';
+import PawnTicketRejectionScreen from './TicketScreens/PawnTickets/PawnTicketRejection';
+
+//pawn tickets: tabs
+import CurrentPawnTickets from './TicketScreens/PawnTickets/CurrentPawnTickets';
+import PastPawnTickets from './TicketScreens/PawnTickets/PastPawnTickets';
+import PendingPawnTickets from './TicketScreens/PawnTickets/PendingPawnTickets';
+
+//Pawn tickets: editing
+import EditPawnTicketScreen from './TicketScreens/PawnTickets/EditPawnTicket';
+import EditPawnItemScreen from './TicketScreens/PawnTickets/EditPawnItem';
+
+//Sell tickets: approval/rejection
+import SellTicketApprovalScreen from './TicketScreens/SellTickets/SellTicketApproval';
+import SellTicketRejectionScreen from './TicketScreens/SellTickets/SellTicketRejection';
+
+//Sell tickets: tabs
+import PastSellTickets from './TicketScreens/SellTickets/PastSellTickets';
+import PendingSellTickets from './TicketScreens/SellTickets/PendingSellTickets';
+
+//Sell tickets: editing
+import EditSellTicketScreen from './TicketScreens/SellTickets/EditSellTicket';
+import EditSellItemScreen from './TicketScreens/SellTickets/EditSellItem';
+
+//Recent Tickets
+import RecentTicketsScreen from './RecentTickets';
 
 class LoginScreen extends React.Component {
   state = { email: '', password: '', error: '', loading: false, auth: '' };
@@ -129,7 +165,7 @@ class LoginScreen extends React.Component {
       loading: false,
       error: '',
      });
-     console.log(this.retrieveData());
+     //console.log(this.retrieveData());
      this.props.navigation.navigate('Home');
   }
 
@@ -139,6 +175,7 @@ class LoginScreen extends React.Component {
       <View style={styles.container}>
         <Image
           source={require('./images/felogo.png')}
+          //source={{uri: 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/2018-8-28_5bade7c71eb6bf1a9312b441_back.jpg'}}
           style={{ resizeMode: 'contain', width: 300, height: 80, }}
         />
         <View style={{
@@ -185,49 +222,84 @@ const styles = StyleSheet.create({
       marginTop: 10
   }
 });
-
 const RootStack = createStackNavigator({
-    LogOut : {screen: LogOutButton},
-    loginFlow : {
-      screen: createStackNavigator({
-        login: { screen: LoginScreen },
-        LogOut : {screen: LogOutButton},
-      }),
-      navigationOptions: {
-        header: null,
-        disabledBackGesture: true
-      }
-    },
-    Home : {
-      screen: createStackNavigator({
-        main:{screen: HomeScreen},
-        UserHistory: {screen: UserHistoryScreen},
-        Tickets: {screen: Tickets},
-        AllPawnTickets: {screen: AllPawnTicketScreens},
-        AllSellTickets: {screen: AllSellTicketScreens},
-        LogOut : {screen: LogOutButton},
-        TicketApproval: {screen: TicketApprovalScreen},
-      }),
-      navigationOptions: {
-        header:null,
-        headerStyle: {
-          backgroundColor: '#C00000',
+  loginFlow : {
+    screen: createStackNavigator({
+      login: { screen: LoginScreen },
+      LogOut : {screen: LogOutButton},
+    }),
+    navigationOptions: {
+      header: null,
+      disabledBackGesture: true
+    }
+  },
+    mainFlow : {
+      screen: createBottomTabNavigator({
+        Tickets: {
+          screen: createStackNavigator({
+            main: {screen: RecentTicketsScreen},
+          }),
+          navigationOptions: {
+            initialRouteName: 'main',
+            tabBarIcon: ({ focused, tintColor }) => {
+              return <Ionicons name={'md-contact'} size={25}
+              color={'white'} />;
+            },
+            swipeEnabled: false,
+            gesturesEnabled: false,
+          }
         },
-        headerTintColor: '#ffffff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: '#ffffff'
+        Home: {
+          screen: createStackNavigator({
+            main:{screen: HomeScreen},
+            LogOut : {screen: LogOutButton},
+            UserHistory: {screen: UserHistoryScreen},
+            UserSettings: {screen: UserSettingsScreen},
+            AllPawnTickets: {screen: AllPawnTicketScreen},
+            AllSellTickets: {screen: AllSellTicketScreen},
+            SellTicket: {screen: SellTicket},
+            PawnTicket: {screen: PawnTicket},
+            CurrentPawnTickets: {screen: CurrentPawnTickets},
+            PastPawnTickets: {screen: PastPawnTickets},
+            PendingPawnTickets: {screen: PendingPawnTickets},
+            PastSellTickets: {screen: PastSellTickets},
+            PendingSellTickets: {screen: PendingSellTickets},
+            PawnTicketApproval: {screen: PawnTicketApprovalScreen},
+            PawnTicketRejection: {screen: PawnTicketRejectionScreen},
+            EditPawnTicket:{screen: EditPawnTicketScreen},
+            EditPawnItem:{screen: EditPawnItemScreen},
+            SellTicketApproval: {screen: SellTicketApprovalScreen},
+            SellTicketRejection: {screen: SellTicketRejectionScreen},
+            EditSellTicket: {screen: EditSellTicketScreen},
+            EditSellItem:{screen: EditSellItemScreen},
+          }),
+          navigationOptions: {
+            gesturesEnabled:false,
+            hardwareBackPress: true,
+            initialRouteName: 'main',
+            tabBarIcon: ({ focused, tintColor }) => {
+              return <Ionicons name={'md-home'} size={25}
+              color={'white'} />;
+            },
+          }
         },
-      }},
     },
     {
-      initialRouteName: 'loginFlow',
+      initialRouteName: 'Home',
       activeTintColor: 'white',
       inactiveTintColor: 'white',
-      barStyle: { backgroundColor: '#C00000' }
-    },
+      barStyle: { backgroundColor: '#C00000' },
+      tabBarOptions: {
+        activeTintColor: 'white',
+        inactiveTintColor: 'white',
+        fontWeight: 'bold',
+        style: {
+          backgroundColor: '#C00000',
+        }
+      }
+    }
+  ),
   navigationOptions: {
-    header:null,
     headerStyle: {
       backgroundColor: '#C00000',
     },
@@ -236,8 +308,75 @@ const RootStack = createStackNavigator({
       fontWeight: 'bold',
       color: '#ffffff'
     },
-
-
+    header:null,
+    gesturesEnabled: false,
   }
-);
+  }
+});
+// const RootStack = createStackNavigator({
+//       LogOut : {screen: LogOutButton},
+//       loginFlow : {
+//         screen: createStackNavigator({
+//           login: { screen: LoginScreen },
+//           LogOut : {screen: LogOutButton},
+//         }),
+//         navigationOptions: {
+//           header: null,
+//           disabledBackGesture: true
+//         }
+//       },
+//       Home : {
+//         screen: createStackNavigator({
+//           main:{screen: HomeScreen},
+//           LogOut : {screen: LogOutButton},
+//           UserHistory: {screen: UserHistoryScreen},
+//           AllPawnTickets: {screen: AllPawnTicketScreen},
+//           AllSellTickets: {screen: AllSellTicketScreen},
+//           SellTicket: {screen: SellTicket},
+//           PawnTicket: {screen: PawnTicket},
+//           CurrentPawnTickets: {screen: CurrentPawnTickets},
+//           PastPawnTickets: {screen: PastPawnTickets},
+//           PendingPawnTickets: {screen: PendingPawnTickets},
+//           PastSellTickets: {screen: PastSellTickets},
+//           PendingSellTickets: {screen: PendingSellTickets},
+//           PawnTicketApproval: {screen: PawnTicketApprovalScreen},
+//           PawnTicketRejection: {screen: PawnTicketRejectionScreen},
+//           EditPawnTicket:{screen: EditPawnTicketScreen},
+//           EditPawnItem:{screen: EditPawnItemScreen},
+//           SellTicketApproval: {screen: SellTicketApprovalScreen},
+//           SellTicketRejection: {screen: SellTicketRejectionScreen},
+//           EditSellTicket: {screen: EditSellTicketScreen},
+//           EditSellItem:{screen: EditSellItemScreen},
+//         }),
+//         navigationOptions: {
+//           header:null,
+//           headerStyle: {
+//             backgroundColor: '#C00000',
+//           },
+//           headerTintColor: '#ffffff',
+//           headerTitleStyle: {
+//             fontWeight: 'bold',
+//             color: '#ffffff'
+//           },
+//         }
+//       },
+//     },
+//     {
+//       initialRouteName: 'Home',
+//       activeTintColor: 'white',
+//       inactiveTintColor: 'white',
+//       barStyle: { backgroundColor: '#C00000' }
+//     },
+//     navigationOptions: {
+//       header:null,
+//       headerStyle: {
+//         backgroundColor: '#C00000',
+//       },
+//       headerTintColor: '#ffffff',
+//       headerTitleStyle: {
+//         fontWeight: 'bold',
+//         color: '#ffffff'
+//       },
+//     }
+// );
 export default RootStack;

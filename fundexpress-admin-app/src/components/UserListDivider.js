@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Content, List, ListItem, Text } from 'native-base';
 import { createStackNavigator, createBottomTabNavigator, navigationOptions } from 'react-navigation';
-import { AsyncStorage, TouchableOpacity, ListView, View } from 'react-native';
+import { AsyncStorage, TouchableOpacity, ListView, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
-import UserHistory from '../UserHistory';
 import UserListItem from './UserListItem';
-import SearchBar from './SearchBar';
+import SearchBarItem from './SearchBar';
 
 
 export default class UserListDivider extends Component {
@@ -87,13 +86,15 @@ export default class UserListDivider extends Component {
   renderRow(rowData: string, sectionID: number, rowID: number) {
 
       return (
-        <List>
+        <ScrollView>
+
             <ListItem itemDivider>
               <Text>{this.getArrayOfDividers(this.state.userList).dataSource[rowID]}</Text>
 
             </ListItem>
             <UserListItem navigation={this.state.navigation} currentLetter={this.getArrayOfDividers(this.state.userList).dataSource[rowID]} userList={this.state.userList}/>
-        </List>
+
+        </ScrollView>
       );
   }
 
@@ -114,12 +115,15 @@ export default class UserListDivider extends Component {
       return (
 
         <View>
+          <SearchBarItem users={this.state.userList} navigation={this.state.navigation}/>
+
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
                     enableEmptySections={true}
                     renderSectionHeader={this.renderSectionHeader}
                 />
+
 
         </View>
       );

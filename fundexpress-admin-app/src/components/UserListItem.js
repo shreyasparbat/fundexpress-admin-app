@@ -50,7 +50,7 @@ export default class UserListItem extends Component {
       // console.log(currentUser);
       return (
             <ListItem>
-              <Text  onPress={() => this.state.navigation.navigate('Tickets', {currentUser: currentUser})}>{currentUser.fullName}</Text>
+              <Text  onPress={() => this.state.navigation.navigate('UserHistory', {currentUser: currentUser})}>{currentUser.fullName}</Text>
             </ListItem>
       );
   }

@@ -4,6 +4,7 @@ import { FormLabel, FormInput, FormValidationMessage, Avatar, Button } from 'rea
 import { GiftedForm } from 'react-native-gifted-form';
 import LogOutButton from './components/LogOutButton';
 import { Picker, Icon, DatePicker } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default class UserSettingsScreen extends React.Component {
 
@@ -27,7 +28,6 @@ export default class UserSettingsScreen extends React.Component {
     super(props)
     console.log("User Settings Screen");
     this.state={
-        data:{},
         email: '',
         password: '',
         fullName: '',
@@ -43,16 +43,23 @@ export default class UserSettingsScreen extends React.Component {
         noOfC:0,
         noOfL:0,
         noOfD:0,
-        ethHash:'',
+        initialCreditRating:0,
+        initialLtvPercentage: 0,
+        currentCreditRating: 0,
+        currentLtvPercentage: 0,
+        registrationComplete: false,
         loading:false,
-        currentUserID: this.props.navigation.getParam('currentUser'),
+        currentUserID: this.props.navigation.getParam('currentUserID'),
     }
     console.log("1. User Settings Screen initialised: " + this.state)
   }
   componentWillMount(){
     console.log("2. call retrieve data");
+
     this.setState({loading:true});
     this.retrieveData().then((auth) => {
+      console.log("auth: " + auth)
+      console.log("currentUserID: " +this.state.currentUserID)
     fetch('http://206.189.145.2:3000/admin/getUser/',{ //fetch from admin url
       method: 'POST',
       headers: {
@@ -65,12 +72,13 @@ export default class UserSettingsScreen extends React.Component {
       }),
     })
     .then((response) => {
-      console.log("response.ok: " + response.ok);
-      //return response.json()
-      return response
+      console.log("4. response.ok: " + response.ok);
+      console.log("5. response: " + response)
+     return response.json()
+      // return response
     })
     .then((response) => {
-      console.log("/tickets Success");
+      console.log("6. set state");
       this.setState({
         email: response.email,
         fullName: response.fullName,
@@ -86,10 +94,16 @@ export default class UserSettingsScreen extends React.Component {
         noOfC:response.noOfC,
         noOfL:response.noOfL,
         noOfD:response.noOfD,
-        ethHash:response.ethHash,
+        initialCreditRating:response.initialCreditRating,
+        initialLtvPercentage:response.initialLtvPercentage,
+        currentCreditRating:response.currentCreditRating,
+        currentLtvPercentage:response.currentLtvPercentage,
+        registrationComplete:response.registrationComplete,
         loading:false
       })
-
+      console.log("7. finished setting state")
+      console.log(this.state.email)
+      console.log(this.state.fullName)
     })
     .catch((error) => {
       console.log("error")
@@ -97,74 +111,51 @@ export default class UserSettingsScreen extends React.Component {
     })
   });
 
-  //org
-    // this.retrieveData().then((token) => {
-    //   this.setState({loading:true});
-    //   fetch('http://206.189.145.2:3000/admin/getUser', {
-    //   method: 'POST',
-    //   headers: new Headers({
-    //     // Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     'x-auth' : token,
-    //   }),
-    //   body: JSON.stringify({
-    //     userID: this.state.currentUserID
-    //   })
-    // })
-    //   .then((response) => {
-    //     console.log("4. response.ok: " + response.ok);
-    //     return response.json()
-    //   })
-    //   .then((response) => {
-    //     console.log("5. profile retrieved")
-    //     this.setState({
-    //       data: response,
-    //       // email: response.email,
-    //       // fullName: response.fullName,
-    //       // gender: response.gender,
-    //       // dateOfBirth: response.dateOfBirth,
-    //       // ic: response.ic,
-    //       // landlineNumber: response.landlineNumber,
-    //       // mobileNumber: response.mobileNumber,
-    //       // address: response.address,
-    //       // addressType: response.addressType,
-    //       // citizenship: response.citizenship,
-    //       // race:response.race,
-    //       // noOfC:response.noOfC,
-    //       // noOfL:response.noOfL,
-    //       // noOfD:response.noOfD,
-    //       // ethHash:response.ethHash,
-    //       loading:false,
-    //     });
-    //     console.log("6. current state is " + this.state)
-    //     //console.log("state fullName: " + this.state.fullName)
-    //   })
-    //   .catch((error) => {
-    //     console.log("error")
-    //     console.log(error)
-    //   })
-    // })
+
   }
 
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
+      console.log("3. value")
       return value;
     } catch (error) {
       console.log(error)
     }
   }
   submit() {
+    console.log("userID: " + this.state.currentUserID)
+    console.log("EMAIL: " + this.state.email)
+    console.log("FULLNAME: " + this.state.fullName)
+    console.log("GENDER: " + this.state.gender)
+    console.log("DOB: " + this.state.dateOfBirth)
+    console.log("IC: " + this.state.ic)
+    console.log("MOBILE NUMBER: " + this.state.mobileNumber)
+    console.log("landlineNumber: " + this.state.landlineNumber)
+    console.log("address: " + this.state.address)
+    console.log("addressType: " + this.state.addressType)
+    console.log("citizenship: " + this.state.citizenship)
+    console.log("race: " + this.state.race)
+    console.log("noOfC: " + this.state.noOfC)
+    console.log("noOfL: " + this.state.noOfL)
+    console.log("noOfD: " + this.state.noOfD)
+    console.log("initialCreditRating: " + this.state.initialCreditRating)
+    console.log("initialLtvPercentage: " + this.state.initialLtvPercentage)
+    console.log("currentCreditRating: " + this.state.currentCreditRating)
+    console.log("currentLtvPercentage: " + this.state.currentLtvPercentage)
+    console.log("registrationComplete: " + this.state.registrationComplete)
+
+
     this.retrieveData().then((token) => {
       fetch('http://206.189.145.2:3000/admin/updateUser',{
         method: 'POST',
         headers: new Headers({
+          'Content-Type':'application/json',
           'x-auth': token,
         }),
         body: JSON.stringify({
           userID:this.state.currentUserID,
           email: this.state.email,
-          password: this.state.password,
           fullName: this.state.fullName,
           gender: this.state.gender,
           dateOfBirth: this.state.dateOfBirth,
@@ -172,29 +163,62 @@ export default class UserSettingsScreen extends React.Component {
           mobileNumber: parseInt(this.state.mobileNumber),
           landlineNumber: parseInt(this.state.landlineNumber),
           address: this.state.address,
+          addressType: this.state.addressType,
           citizenship: this.state.citizenship,
-          nationality: this.state.nationality,
+          race: this.state.race,
+          noOfC: this.state.noOfC,
+          noOfL: this.state.noOfL,
+          noOfD: this.state.noOfD,
+          initialCreditRating:this.state.initialCreditRating,
+          initialLtvPercentage:this.state.initialLtvPercentage,
+          currentCreditRating:this.state.currentCreditRating,
+          currentLtvPercentage:this.state.currentLtvPercentage,
+          registrationComplete:this.state.registrationComplete,
         }),
       })
     })
       .then((response) => {
-        console.log("response.ok:")
+        console.log("4. response.ok: " + response.ok)
         return response.json()
       })
       .then((response) => {
-        console.log("profile changed")
-        this.props.navigation.navigate('Profile');
+        console.log("5. response.json" + response)
+        this.setState({
+          userID:response.currentUserID,
+          email: response.email,
+          fullName: response.fullName,
+          gender: response.gender,
+          dateOfBirth: response.dateOfBirth,
+          ic: response.ic,
+          landlineNumber: response.landlineNumber,
+          mobileNumber: response.mobileNumber,
+          address: response.address,
+          addressType: response.addressType,
+          citizenship: response.citizenship,
+          race:response.race,
+          noOfC:response.noOfC,
+          noOfL:response.noOfL,
+          noOfD:response.noOfD,
+          initialCreditRating:response.initialCreditRating,
+          initialLtvPercentage:response.initialLtvPercentage,
+          currentCreditRating:response.currentCreditRating,
+          currentLtvPercentage:response.currentLtvPercentage,
+          registrationComplete:response.registrationComplete,
+          loading:false
+        })
+        // console.log("profile changed")
+        // this.props.navigation.navigate('Profile');
       })
       .catch((errorResponse) => {
         console.log("error")
         console.log(errorResponse)
       })
       .catch((errorResponse) => {
-        console.log("error with profile/edit ")
+        console.log("error with admin/updateUser ")
         console.log(errorResponse)
       })
       .catch((error) => {
-        console.log("error retrieving profile data")
+        console.log("error updating user data")
         console.log(error)
       });
     }
@@ -204,8 +228,10 @@ export default class UserSettingsScreen extends React.Component {
       return <ActivityIndicator/>;
     }
     return(
-      <ScrollView contentContainerStyle={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}
-       showsVerticalScrollIndicator bounces={false} >
+      <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+        extraScrollHeight = {150}
+        keyboardOpeningTime = {10}
+      >
        {/* email */}
        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
          <FormLabel>Email</FormLabel>
@@ -218,16 +244,6 @@ export default class UserSettingsScreen extends React.Component {
          />
        </View>
 
-       {/* Password */}
-       <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
-         <FormLabel>Password</FormLabel>
-         <FormInput
-           name='password'
-           onChangeText={password => this.setState({ password })}
-           value={this.state.password}
-           //placeholder={this.state.password}
-         />
-       </View>
 
        {/* Full Name */}
        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
@@ -258,32 +274,31 @@ export default class UserSettingsScreen extends React.Component {
               selectedValue={this.state.gender}
               onValueChange={gender => this.setState({gender})}
             >
+              <Picker.Item label="Gender" value="" />
               <Picker.Item label="Male" value="M" />
               <Picker.Item label="Female" value="F" />
 
             </Picker>
         </View>
 
-      {/* dateOfBirth */}
-      <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
-      <FormLabel>Date Of Birth</FormLabel>
-      <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
-      <DatePicker
-            name='dateOfBirth'
-            defaultDate={this.state.dateOfBirth}
-            minimumDate={new Date(1900, 1, 1)}
-            maximumDate={new Date(2018, 12, 31)}
-            locale={"SGP"}
-            //timeZoneOffsetInMinutes={0}
-            modalTransparent={false}
-            animationType={"fade"}
-            androidMode={"default"}
-            placeHolderText= {this.state.dateOfBirth}
-            textStyle={{ color: "black" }}
-            placeHolderTextStyle={{ color: "black" }}
-            onDateChange={dateOfBirth => this.setState({ dateOfBirth })}
-            />
-            </View>
+        {/* dateOfBirth */}
+        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
+          <FormLabel>Date Of Birth</FormLabel>
+          <DatePicker
+                name='dateOfBirth'
+                defaultDate={new Date(this.state.dateOfBirth)}
+                minimumDate={new Date(1900, 1, 1)}
+                maximumDate={new Date()}
+                locale={"SGP"}
+                //timeZoneOffsetInMinutes={0}
+                modalTransparent={false}
+                animationType={"fade"}
+                androidMode={"default"}
+                placeHolderText= {this.state.dateOfBirth}
+                textStyle={{ color: "black" }}
+                placeHolderTextStyle={{ color: "black" }}
+                onDateChange={dateOfBirth => this.setState({ dateOfBirth })}
+                />
         </View>
 
         {/* NRIC */}
@@ -304,7 +319,7 @@ export default class UserSettingsScreen extends React.Component {
           <FormInput
             name='mobileNumber'
             onChangeText={mobileNumber => this.setState({ mobileNumber })}
-            value={this.state.mobileNumber}
+            value={this.state.mobileNumber.toString()}
             //value={this.state.mobileNumber}
             //placeholder='Mobile Number'
           />
@@ -315,7 +330,7 @@ export default class UserSettingsScreen extends React.Component {
           <FormLabel>Home Phone Number</FormLabel>
           <FormInput
             onChangeText={landlineNumber => this.setState({ landlineNumber })}
-            value={this.state.landlineNumber}
+            value={this.state.landlineNumber.toString()}
             //value={this.state.landlineNumber}
             //placeholder='Home Phone Number'
           />
@@ -329,6 +344,29 @@ export default class UserSettingsScreen extends React.Component {
             value={this.state.address}
             //placeholder='Address'
           />
+        </View>
+
+        {/* addressType */}
+        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
+          <FormLabel>Housing Type</FormLabel>
+          <Picker
+                note
+                mode="dropdown"
+                iosHeader="Housing Type"
+                placeholder={this.state.addressType}
+                placeholderStyle={{ color: "#c7c7cd" }}
+                iosIcon={<Icon name="ios-arrow-down-outline" />}
+                style={{ width: '100%' }}
+                textStyle = {{color : 'black' }}
+                selectedValue={this.state.addressType}
+                onValueChange={addressType => this.setState({ addressType})}
+              >
+                <Picker.Item label="Housing Tyoe" value="" />
+                <Picker.Item label="Condominium/Landed" value="C" />
+                <Picker.Item label="HDB" value="H" />
+                <Picker.Item label="Others" value="O" />
+
+              </Picker>
         </View>
 
         {/* Citizenship */}
@@ -355,11 +393,13 @@ export default class UserSettingsScreen extends React.Component {
                 textStyle = {{color : 'black' }}
                 //selectedValue={this.state.gender}
                 selectedValue={this.state.race}
-                onValueChange={gender => this.setState({gender})}
+                onValueChange={race => this.setState({race})}
               >
+                <Picker.Item label="Race" value="" />
                 <Picker.Item label="Chinese" value="C" />
                 <Picker.Item label="Malay" value="M" />
                 <Picker.Item label="Indian" value="I" />
+                <Picker.Item label="Eurasian" value="E" />
                 <Picker.Item label="Others" value="O" />
 
               </Picker>
@@ -370,7 +410,7 @@ export default class UserSettingsScreen extends React.Component {
           <FormLabel>No Of C</FormLabel>
           <FormInput
             onChangeText={noOfC => this.setState({ noOfC })}
-            value={this.state.noOfC}
+            value={this.state.noOfC.toString()}
           />
         </View>
 
@@ -379,7 +419,7 @@ export default class UserSettingsScreen extends React.Component {
           <FormLabel>No Of L</FormLabel>
           <FormInput
             onChangeText={noOfL => this.setState({ noOfL })}
-            value={this.state.noOfL}
+            value={this.state.noOfL.toString()}
           />
         </View>
 
@@ -388,11 +428,11 @@ export default class UserSettingsScreen extends React.Component {
           <FormLabel>No Of D</FormLabel>
           <FormInput
             onChangeText={noOfD => this.setState({ noOfD })}
-            value={this.state.noOfD}
+            value={this.state.noOfD.toString()}
           />
         </View>
 
-        {/* ethHash */}
+        {/**/}
         <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
           <FormLabel>Ethereum Hash</FormLabel>
           <FormInput
@@ -400,6 +440,8 @@ export default class UserSettingsScreen extends React.Component {
             value={this.state.ethHash}
           />
         </View>
+
+        {/* submit button*/}
         <Button
           title='Submit Changes'
           color='white'
@@ -408,7 +450,55 @@ export default class UserSettingsScreen extends React.Component {
           containerViewStyle={{marginTop:30,marginBottom:30}}
         />
 
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
+
+//org
+  // this.retrieveData().then((token) => {
+  //   this.setState({loading:true});
+  //   fetch('http://206.189.145.2:3000/admin/getUser', {
+  //   method: 'POST',
+  //   headers: new Headers({
+  //     // Accept: 'application/json',
+  //     'Content-Type': 'application/json',
+  //     'x-auth' : token,
+  //   }),
+  //   body: JSON.stringify({
+  //     userID: this.state.currentUserID
+  //   })
+  // })
+  //   .then((response) => {
+  //     console.log("4. response.ok: " + response.ok);
+  //     return response.json()
+  //   })
+  //   .then((response) => {
+  //     console.log("5. profile retrieved")
+  //     this.setState({
+  //       data: response,
+  //       // email: response.email,
+  //       // fullName: response.fullName,
+  //       // gender: response.gender,
+  //       // dateOfBirth: response.dateOfBirth,
+  //       // ic: response.ic,
+  //       // landlineNumber: response.landlineNumber,
+  //       // mobileNumber: response.mobileNumber,
+  //       // address: response.address,
+  //       // addressType: response.addressType,
+  //       // citizenship: response.citizenship,
+  //       // race:response.race,
+  //       // noOfC:response.noOfC,
+  //       // noOfL:response.noOfL,
+  //       // noOfD:response.noOfD,
+  //       // ethHash:response.ethHash,
+  //       loading:false,
+  //     });
+  //     console.log("6. current state is " + this.state)
+  //     //console.log("state fullName: " + this.state.fullName)
+  //   })
+  //   .catch((error) => {
+  //     console.log("error")
+  //     console.log(error)
+  //   })
+  // })

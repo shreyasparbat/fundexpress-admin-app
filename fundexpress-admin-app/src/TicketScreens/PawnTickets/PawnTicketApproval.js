@@ -3,7 +3,7 @@ import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityI
 import { Button } from 'react-native-elements';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-export default class TicketApprovalScreen extends React.Component{
+export default class PawnTicketApprovalScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Approval',
     headerStyle: {
@@ -21,6 +21,7 @@ export default class TicketApprovalScreen extends React.Component{
       editedTicketState:this.props.navigation.getParam('editedTicketState'),
       successMessage: 'Pawn Ticket Approval Failed',
       loading: false,
+      currentUserID: this.props.navigation.getParam('currentUserID'),
     }
     console.log(this.state.editedTicketState);
     console.log("1. this state is initialised");
@@ -57,8 +58,8 @@ export default class TicketApprovalScreen extends React.Component{
       }),
       body: JSON.stringify(
         {
-          // "__v": this.state.editedTicketState.__v,
-          // "_id": this.state.editedTicketState._id,
+          "__v": this.state.editedTicketState.__v,
+          "_id": this.state.editedTicketState._id,
           "pawnTicketID":this.state.editedTicketState.pawnTicketID,
           "item": this.state.editedTicketState.item,
           "dateCreated": this.state.editedTicketState.dateCreated,
@@ -139,7 +140,7 @@ export default class TicketApprovalScreen extends React.Component{
             backgroundColor='#C00000'
             color='#FFFFFF'
             title='Back to User History'
-            onPress={()=> this.props.navigation.navigate('UserHistory')}
+            onPress={()=> this.props.navigation.navigate('UserHistory', {currentUserID: this.state.currentUserID})}
           />
         </View>
       </View>

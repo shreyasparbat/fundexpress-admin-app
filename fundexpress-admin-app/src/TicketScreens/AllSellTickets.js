@@ -23,16 +23,16 @@ class AllSellTicketsScreen extends React.Component {
   };
 
   render() {
-    const currentUser = this.props.navigation.getParam('currentUser');
-    console.log('AllPawnTickets currentUser: ' +  currentUser._id);
+    const currentUser = this.props.navigation.getParam('currentUserID');
+    console.log('AllPawnTickets currentUserID: ' +  currentUserID);
     return (
       <Container>
         <Tabs>
           <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='add-to-list'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}> Pending</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
-            <PendingSellTickets navigation={this.props.navigation} currentUser={currentUser} />
+            <PendingSellTickets navigation={this.props.navigation} currentUserID={currentUserID} />
           </Tab>
           <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='back-in-time'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}> Past</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
-            <PastSellTickets navigation={this.props.navigation} currentUser={currentUser} />
+            <PastSellTickets navigation={this.props.navigation} currentUserID={currentUserID} />
           </Tab>
         </Tabs>
       </Container>

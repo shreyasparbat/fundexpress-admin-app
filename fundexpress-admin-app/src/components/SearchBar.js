@@ -28,8 +28,10 @@ export default class SearchBarItem extends Component {
       }
 
     }
-    this.setState({results: usersToRender, query: ""})
+    this.setState({results: usersToRender, /*query: ""*/})
+    //this.setState({renderCancelButton: true, query: ""});
   }
+  //either have a search button or a cancel button
   renderSearchOrCancel(){
     if (this.state.renderCancelButton==true){
       return(
@@ -47,7 +49,7 @@ export default class SearchBarItem extends Component {
         <Button transparent onPress={() => {
             this.onSearch();
             this.setState({
-              renderCancelButton: true
+              renderCancelButton: true,
 
             });
           }
@@ -66,7 +68,14 @@ export default class SearchBarItem extends Component {
 
             <InputGroup style={{width:"80%"}}>
                 <Icon name="ios-search" />
-                <Input name='query' placeholder="Type a name"  onChangeText={query => this.setState({ query })}/>
+                <Input
+                  name='query'
+                  placeholder="Type a name"
+                  //value={this.state.query}
+                  onChangeText={query => {
+                    this.setState({ query })
+                    }
+                }/>
             </InputGroup>
             {this.renderSearchOrCancel()}
         </View>

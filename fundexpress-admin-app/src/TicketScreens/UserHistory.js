@@ -37,8 +37,8 @@ export default class UserHistoryScreen extends React.Component {
   });
   render() {
     console.log("User History Screen");
-    const currentUser = this.props.navigation.getParam('currentUser');
-    console.log("My Tickets: " + currentUser._id);
+    const currentUserID = this.props.navigation.getParam('currentUserID');
+    console.log("My Tickets: " + currentUserID);
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -51,7 +51,7 @@ export default class UserHistoryScreen extends React.Component {
         <View style={{flex: 0.4, marginTop: 100, alignSelf: 'center'}}>
           <View style={{ flexDirection: 'row', }}>
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('AllPawnTickets', {currentUser: currentUser})}
+                onPress={() => this.props.navigation.navigate('AllPawnTickets', {currentUserID: currentUserID})}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >
@@ -64,7 +64,7 @@ export default class UserHistoryScreen extends React.Component {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('AllSellTickets', {currentUser: currentUser})}
+                onPress={() => this.props.navigation.navigate('AllSellTickets', {currentUserID: currentUserID})}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >
@@ -79,7 +79,7 @@ export default class UserHistoryScreen extends React.Component {
           </View>
           <View style={{ flexDirection: 'row', marginTop: 7, alignSelf: 'center'}}>
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('UserSettings')}
+                onPress={() => this.props.navigation.navigate('UserSettings', {currentUserID: currentUserID})}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >

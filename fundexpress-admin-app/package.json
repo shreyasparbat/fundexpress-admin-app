@@ -16,6 +16,7 @@
     "@appbaseio/reactivesearch-native": "^0.10.0",
     "@expo/samples": "2.1.1",
     "axios": "^0.18.0",
+    "braintree-dropin-react": "^0.1.1",
     "expo": "^30.0.1",
     "native-base": "^2.8.0",
     "react": "16.3.1",
@@ -23,6 +24,7 @@
     "react-native-awesome-alerts": "^1.1.1",
     "react-native-elements": "^0.19.1",
     "react-native-gifted-form": "^0.1.1",
+    "react-native-image-zoom-viewer": "^2.2.23",
     "react-native-searchbar": "^1.15.0",
     "react-native-sglistview": "^0.4.5",
     "react-navigation": "^2.16.0"

@@ -3,7 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator, Asy
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PawnTicket from './components/PawnTicket';
 import LogOutButton from './components/LogOutButton';
+import RecentSellTicketsScreen from './RecentSellTickets';
+import RecentPawnTicketsScreen from './RecentPawnTickets';
 
+import { Container, Header, Tab, Tabs, TabHeading} from 'native-base';
 export default class RecentTicketsScreen extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: "Recent Tickets",
@@ -28,78 +31,20 @@ export default class RecentTicketsScreen extends React.Component {
       data:[],
     }
   }
-
-  retrieveData = async () => {
-    try{
-      const value = await AsyncStorage.getItem('auth');
-      console.log('2. auth retrieved: ' + value)
-      return value;
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  retrieveTickets(){
-    console.log("start of retrieveTickets in /admin/getTicketsPendingApproval")
-    //normal client retrieve tickets
-    this.retrieveData().then((auth) => {
-    fetch('http://206.189.145.2:3000/admin/getTicketsPendingApproval',{ //fetch from admin url
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'x-auth' : auth
-      })
-    })
-    .then((response) => {
-      console.log("response.ok: " + response.ok);
-      return response.json()
-    })
-    .then((response) => {
-      console.log("/tickets Success");
-      this.setState({
-        data: response.pawnTicketsPendingApproval.sort(function(a,b){
-          return new Date(b.date) - new Date(a.date);
-        }),
-        loading:false
-      })
-      console.log("allTicketsPendingApproval array: " + response.pawnTicketsPendingApproval);
-    })
-    .catch((error) => {
-      console.log("error")
-      console.log(error)
-    })
-  })
-  }
-
-  componentWillMount(){
-    this.retrieveTickets()
-  }
-
-  getFrontURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/2018-8-28_'+ticketID+ '_front.jpg';
-    return uri;
-  }
-  getBackURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/2018-8-28_'+ticketID+ '_back.jpg';
-    return uri;
-  }
-
-  renderTickets(){
-    return this.state.data.map(ticket =>
-    <PawnTicket
-      key={ticket._id}
-      data={ticket}
-      navigation={this.props.navigation}
-      uri={this.getFrontURI(ticket._id)}
-    />
-    );
-  }
   render() {
 
     return (
-      <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
-        {this.renderTickets()}
-      </ScrollView>
+      <Container >
+      <Tabs>
+        <Tab heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}} ><Icon name={'ticket'} size={10} color={'#FFFFFF'} /><Text style={{color:'#ffffff'}}>Pawn Tickets</Text></TabHeading>}  >
+          <RecentPawnTicketsScreen navigation={this.props.navigation}/>
+        </Tab>
+        <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name={'cog'} size={10} color={'#FFFFFF'} /><Text style={{color:'#ffffff'}}>Sell Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+          <RecentSellTicketsScreen navigation={this.props.navigation}/>
+        </Tab>
+      </Tabs>
+
+      </Container>
     );
   }
 }

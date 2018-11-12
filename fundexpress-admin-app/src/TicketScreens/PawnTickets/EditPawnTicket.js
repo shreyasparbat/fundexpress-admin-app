@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator, Platform } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
 import { Avatar , Button, FormLabel, FormInput } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Picker, DatePicker, Form} from "native-base";
@@ -21,6 +21,8 @@ export default class EditPawnTicketScreen extends React.Component{
     this.state= {
       currentUserID:  this.props.navigation.getParam('currentUserID'),
       pawnTicketID: this.props.navigation.getParam('pawnTicketID'),
+      frontUri: this.props.navigation.getParam('frontUri'),
+      backUri: this.props.navigation.getParam('backUri'),
       pendingPawnTicket: {},
       item: {},
       dateCreated: new Date() ,
@@ -85,13 +87,6 @@ export default class EditPawnTicketScreen extends React.Component{
     console.log("6c. returning an empty pawnTicket");
     return {};
   }
-  goBack(){
-    this.props.navigation.navigate('UserHistory');
-  }
-  submit(){
-    this.storeData(this.state);
-    console.log('submit: state is  \r\n' + this.state);
-  }
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
@@ -143,6 +138,7 @@ retrieveTickets(){
   })
   .then((response) => {
     console.log("4. response.ok: " + response.ok);
+    console.log()
     return response.json()
   })
   .then((response) => {
@@ -193,7 +189,9 @@ getDateObject(date){
     console.log('approved method reached');
 
 
-    this.props.navigation.navigate('PawnTicketApproval', {editedTicketState: {
+    this.props.navigation.navigate('PawnTicketApproval', {
+      currentUserID: this.state.currentUserID,
+      editedTicketState: {
       "pawnTicketID":this.state.pawnTicketID,
       "item": this.state.item,
       "dateCreated": this.state.dateCreated,
@@ -214,6 +212,7 @@ getDateObject(date){
     console.log('pawnTicketID: ' + this.state.pawnTicketID);
     this.props.navigation.navigate('PawnTicketRejection', {pawnTicketID: this.state.pawnTicketID});
   }
+
   render(){
 
     if(this.state.loading){
@@ -227,6 +226,28 @@ getDateObject(date){
         extraScrollHeight = {150}
         keyboardOpeningTime = {10}
       >
+
+
+      <TouchableOpacity
+        onPress={()=>{this.props.navigation.navigate('ImageView', {frontUri: this.state.frontUri, backUri: this.state.backUri, isPawnTicket: true})}}
+      >
+        <View
+          style={{height:200,borderBottomColor:"black", backgroundColor: 'white', flexDirection: 'row', alignSelf: 'center', width: '100%'}}
+        >
+
+          <Image
+            source={{uri: this.state.frontUri}}
+            style={{ resizeMode: 'contain',width:'50%', backgroundColor: 'white', }}
+          />
+
+          <Image
+            source={{uri: this.state.backUri}}
+            style={{ resizeMode: 'contain',width: '50%', backgroundColor: 'white', }}
+          />
+        </View>
+      </TouchableOpacity>
+
+
 
           {/* dateCreated */}
           <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
@@ -315,7 +336,7 @@ getDateObject(date){
               onChangeText={ value => this.setState({ value })}
               keyboardType={'phone-pad'}
               defaultValue={this.state.value.toString()}
-              value={this.state.value}
+              //value={this.state.value}
             />
           </View>
 
@@ -335,7 +356,7 @@ getDateObject(date){
               onChangeText={ outstandingPrincipal => this.setState({ outstandingPrincipal })}
               keyboardType={'phone-pad'}
               defaultValue={this.state.outstandingPrincipal.toString()}
-              value={this.state.outstandingPrincipal}
+              //value={this.state.outstandingPrincipal}
             />
           </View>
 
@@ -351,7 +372,7 @@ getDateObject(date){
               onChangeText={ outstandingInterest => this.setState({ outstandingInterest })}
               keyboardType={'phone-pad'}
               defaultValue={this.state.outstandingInterest.toString()}
-              value={this.state.outstandingInterest}
+              //value={this.state.outstandingInterest}
             />
           </View>
 

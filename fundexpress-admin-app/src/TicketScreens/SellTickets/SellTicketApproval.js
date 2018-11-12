@@ -3,7 +3,7 @@ import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityI
 import { Button } from 'react-native-elements';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-export default class TicketApprovalScreen extends React.Component{
+export default class SellTicketApprovalScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Approval',
     headerStyle: {

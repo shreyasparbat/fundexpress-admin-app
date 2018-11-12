@@ -31,9 +31,28 @@ export default class PawnTicket extends React.Component {
       expired: props.data.expired,
       outstandingPrincipal:props.data.outstandingPrincipal,
       outstandingInterest: props.data.outstandingInterest,
-      uri: props.uri,
+      frontUri:'',
+      backUri:'',
+      loading: false,
     }
-    console.log(this.state.uri);
+  }
+  getFrontURI(ticketID){
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.png';
+    return uri;
+  }
+  getBackURI(ticketID){
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.png';
+    return uri;
+  }
+
+  componentWillMount(){
+    this.setState({
+      loading:true
+    })
+    this.setState({
+      frontUri: this.getFrontURI(this.state.item._id),
+      backUri: this.getBackURI(this.state.item._id)
+    })
   }
   getTimePassed(dateCreated, expiryDate){
 
@@ -92,7 +111,7 @@ export default class PawnTicket extends React.Component {
       // console.log('day: ' + day)
       var year = arrayOfDateParts[2]
       // console.log('year: ' + year)
-      return day + " " + month.substring(0, 3) + year;
+      return day + " " + month.substring(0, 3) + " " + year;
     }else{
       // console.log("date: " + date);
       var currentDateString = date.toLocaleDateString("en-US", { day: "numeric", month: "long", year:"numeric" })
@@ -105,7 +124,7 @@ export default class PawnTicket extends React.Component {
       // console.log('day: ' + day)
       var year = arrayOfDateParts[2]
       // console.log('year: ' + year)
-      return day + " " + month.substring(0, 3) + year;
+      return day + " " + month.substring(0, 3) + " " +year;
     }
 
   }
@@ -117,7 +136,7 @@ export default class PawnTicket extends React.Component {
       return(
         <CardItem style={{justifyContent: 'center'}}>
           {/* Ticket Approval Button */}
-          <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditPawnTicket', {currentUserID: this.state.currentUserID, pawnTicketID: this.state.ticketNumber})}>
+          <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditPawnTicket', {currentUserID: this.state.currentUserID, pawnTicketID: this.state.ticketNumber, frontUri: this.state.frontUri, backUri: this.state.backUri })}>
             <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
           </Button>
         </CardItem>
@@ -125,8 +144,13 @@ export default class PawnTicket extends React.Component {
     }
     return <CardItem/>
   }
+
+
+
   render(){
     console.log("currentUserID" + this.state.currentUserID);
+    console.log("frontUri: " + this.state.frontUri);
+    console.log("backUri: " + this.state.backUri);
     return(
       <View>
             <Card style={{flex: 0}}>
@@ -134,7 +158,7 @@ export default class PawnTicket extends React.Component {
               <Left>
               <Image
 
-                source={{uri: this.state.uri}}
+                source={{uri: this.state.frontUri}}
                 style={{ resizeMode: 'contain',width:120, height: 120}}
               />
               </Left>

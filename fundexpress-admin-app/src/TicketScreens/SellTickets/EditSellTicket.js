@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator, Platform } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator, Platform, TouchableOpacity } from 'react-native';
 import { Avatar , Button, FormLabel, FormInput } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Picker, DatePicker, Form} from "native-base";
@@ -21,6 +21,8 @@ export default class EditSellTicketScreen extends React.Component{
     this.state= {
       currentUserID:  this.props.navigation.getParam('currentUserID'),
       sellTicketID: this.props.navigation.getParam('sellTicketID'),
+      frontUri: this.props.navigation.getParam('frontUri'),
+      backUri: this.props.navigation.getParam('backUri'),
       item: {},
       dateCreated: new Date() ,
       value: 0,
@@ -76,13 +78,6 @@ export default class EditSellTicketScreen extends React.Component{
     }
     console.log("6c. returning an empty SellTicket");
     return {};
-  }
-  goBack(){
-    this.props.navigation.navigate('UserHistory');
-  }
-  submit(){
-    this.storeData(this.state);
-    console.log('submit: state is  \r\n' + this.state);
   }
   retrieveData = async () => {
     try{
@@ -218,6 +213,24 @@ getDateObject(date){
         extraScrollHeight = {150}
         keyboardOpeningTime = {10}
       >
+      <TouchableOpacity
+        onPress={()=>{this.props.navigation.navigate('ImageView', {frontUri: this.state.frontUri, backUri: this.state.backUri, isPawnTicket: false})}}
+      >
+        <View
+          style={{height:200,borderBottomColor:"black", backgroundColor: 'white', flexDirection: 'row', alignSelf: 'center', width: '100%'}}
+        >
+
+          <Image
+            source={{uri: this.state.frontUri}}
+            style={{ resizeMode: 'contain',width:'50%', backgroundColor: 'white', }}
+          />
+
+          <Image
+            source={{uri: this.state.backUri}}
+            style={{ resizeMode: 'contain',width: '50%', backgroundColor: 'white', }}
+          />
+        </View>
+      </TouchableOpacity>
 
           {/* dateCreated */}
           <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >

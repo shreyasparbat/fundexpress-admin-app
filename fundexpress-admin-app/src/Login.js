@@ -51,6 +51,11 @@ import EditSellItemScreen from './TicketScreens/SellTickets/EditSellItem';
 
 //Recent Tickets
 import RecentTicketsScreen from './RecentTickets';
+import RecentPawnTicketsScreen from './RecentPawnTickets';
+import RecentSellTicketsScreen from './RecentSellTickets';
+
+//ImageView
+import ImageView from './components/ImageView';
 
 class LoginScreen extends React.Component {
   state = { email: '', password: '', error: '', loading: false, auth: '' };
@@ -237,10 +242,12 @@ const RootStack = createStackNavigator({
       screen: createBottomTabNavigator({
         Tickets: {
           screen: createStackNavigator({
-            main: {screen: RecentTicketsScreen},
+            TicketsMain: {screen: RecentTicketsScreen},
+            RecentPawnTickets: {screen: RecentPawnTicketsScreen},
+            RecentSellTickets: {screen: RecentSellTicketsScreen},
           }),
           navigationOptions: {
-            initialRouteName: 'main',
+            initialRouteName: 'TicketsMain',
             tabBarIcon: ({ focused, tintColor }) => {
               return <Ionicons name={'md-contact'} size={25}
               color={'white'} />;
@@ -272,6 +279,7 @@ const RootStack = createStackNavigator({
             SellTicketRejection: {screen: SellTicketRejectionScreen},
             EditSellTicket: {screen: EditSellTicketScreen},
             EditSellItem:{screen: EditSellItemScreen},
+            ImageView:{screen: ImageView},
           }),
           navigationOptions: {
             gesturesEnabled:false,
@@ -285,7 +293,7 @@ const RootStack = createStackNavigator({
         },
     },
     {
-      initialRouteName: 'Home',
+      initialRouteName: 'Tickets',
       activeTintColor: 'white',
       inactiveTintColor: 'white',
       barStyle: { backgroundColor: '#C00000' },
@@ -313,70 +321,4 @@ const RootStack = createStackNavigator({
   }
   }
 });
-// const RootStack = createStackNavigator({
-//       LogOut : {screen: LogOutButton},
-//       loginFlow : {
-//         screen: createStackNavigator({
-//           login: { screen: LoginScreen },
-//           LogOut : {screen: LogOutButton},
-//         }),
-//         navigationOptions: {
-//           header: null,
-//           disabledBackGesture: true
-//         }
-//       },
-//       Home : {
-//         screen: createStackNavigator({
-//           main:{screen: HomeScreen},
-//           LogOut : {screen: LogOutButton},
-//           UserHistory: {screen: UserHistoryScreen},
-//           AllPawnTickets: {screen: AllPawnTicketScreen},
-//           AllSellTickets: {screen: AllSellTicketScreen},
-//           SellTicket: {screen: SellTicket},
-//           PawnTicket: {screen: PawnTicket},
-//           CurrentPawnTickets: {screen: CurrentPawnTickets},
-//           PastPawnTickets: {screen: PastPawnTickets},
-//           PendingPawnTickets: {screen: PendingPawnTickets},
-//           PastSellTickets: {screen: PastSellTickets},
-//           PendingSellTickets: {screen: PendingSellTickets},
-//           PawnTicketApproval: {screen: PawnTicketApprovalScreen},
-//           PawnTicketRejection: {screen: PawnTicketRejectionScreen},
-//           EditPawnTicket:{screen: EditPawnTicketScreen},
-//           EditPawnItem:{screen: EditPawnItemScreen},
-//           SellTicketApproval: {screen: SellTicketApprovalScreen},
-//           SellTicketRejection: {screen: SellTicketRejectionScreen},
-//           EditSellTicket: {screen: EditSellTicketScreen},
-//           EditSellItem:{screen: EditSellItemScreen},
-//         }),
-//         navigationOptions: {
-//           header:null,
-//           headerStyle: {
-//             backgroundColor: '#C00000',
-//           },
-//           headerTintColor: '#ffffff',
-//           headerTitleStyle: {
-//             fontWeight: 'bold',
-//             color: '#ffffff'
-//           },
-//         }
-//       },
-//     },
-//     {
-//       initialRouteName: 'Home',
-//       activeTintColor: 'white',
-//       inactiveTintColor: 'white',
-//       barStyle: { backgroundColor: '#C00000' }
-//     },
-//     navigationOptions: {
-//       header:null,
-//       headerStyle: {
-//         backgroundColor: '#C00000',
-//       },
-//       headerTintColor: '#ffffff',
-//       headerTitleStyle: {
-//         fontWeight: 'bold',
-//         color: '#ffffff'
-//       },
-//     }
-// );
 export default RootStack;

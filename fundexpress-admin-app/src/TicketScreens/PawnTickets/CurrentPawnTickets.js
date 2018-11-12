@@ -23,7 +23,7 @@ class CurrentPawnTickets extends React.Component {
     this.state={
       data:[],
       navigation: props.navigation,
-      currentUserID: props.currentUser._id,
+      currentUserID: props.currentUserID,
     }
     console.log('currentPawnTickets currentUser: ' + this.state.currentUserID)
   }
@@ -51,20 +51,7 @@ class CurrentPawnTickets extends React.Component {
       },
       body: JSON.stringify({
         "userID": this.state.currentUserID,
-        // "item": this.state.item,
-        // "dateCreated": this.state.dateCreated,
-        // "expiryDate": this.state.expiryDate,
-        // "gracePeriodEndDate": this.state.gracePeriodEndDate,
-        // "interestPayable": this.state.interestPayable,
-        // "value": this.state.value,
-        // "approved": this.state.approved,
-        // "closed": this.state.closed,
-        // "expired": this.state.expired,
-        // "outstandingPrincipal": this.state.outstandingPrincipal,
-        // "outstandingInterest": this.state.outstandingInterest,
-
-
-      }), //not in client side
+      }),
     })
     .then((response) => {
       console.log("response.ok: " + response.ok);
@@ -76,7 +63,6 @@ class CurrentPawnTickets extends React.Component {
         data: response.currentPawnTickets,
         loading:false
       })
-      console.log("currentPawnTickets array: " + response.currentPawnTickets);
     })
     .catch((error) => {
       console.log("error")
@@ -96,7 +82,6 @@ class CurrentPawnTickets extends React.Component {
       data={ticket}
       currentUserID={this.state.currentUserID}
       navigation={this.state.navigation}
-      uri='https://apmex.exceda.com/images/Catalog%20Images/Products/11951_Slab.jpg'
     />
     );
   }

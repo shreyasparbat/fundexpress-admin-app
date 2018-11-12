@@ -22,7 +22,7 @@ class PastSellTickets extends React.Component {
     this.state={
       data:[],
       navigation: props.navigation,
-      currentUserID: props.currentUser._id,
+      currentUserID: props.currentUserID,
     }
     console.log('pastSellTickets currentUser: ' + this.state.currentUserID)
   }
@@ -62,7 +62,6 @@ class PastSellTickets extends React.Component {
         data: response.approvedSellTickets,
         loading:false
       })
-      console.log("approvedSellTickets array: " + response.approvedSellTickets);
     })
     .catch((error) => {
       console.log("error")
@@ -75,6 +74,15 @@ class PastSellTickets extends React.Component {
     this.retrieveTickets()
   }
 
+  getFrontURI(ticketID){
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.png';
+    return uri;
+  }
+  getBackURI(ticketID){
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.png';
+    return uri;
+  }
+
   renderTickets(){
     return this.state.data.map(ticket =>
     <SellTicket
@@ -82,10 +90,12 @@ class PastSellTickets extends React.Component {
       data={ticket}
       currentUserID={this.state.currentUserID}
       navigation={this.state.navigation}
-      uri='https://apmex.exceda.com/images/Catalog%20Images/Products/11951_Slab.jpg'
+      frontUri={this.getFrontURI(ticket._id)}
+      backUri={this.getBackURI(ticket._id)}
     />
     );
   }
+
 
   render(){
     console.log(this.state);

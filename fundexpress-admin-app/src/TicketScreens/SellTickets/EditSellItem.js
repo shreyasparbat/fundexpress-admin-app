@@ -10,7 +10,7 @@ export default class EditSellItemScreen extends React.Component{
   static navigationOptions = {
     title: 'Edit Item',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -34,6 +34,9 @@ export default class EditSellItemScreen extends React.Component{
       pawnOfferedValue: 0,
       sellOfferedValue: 0,
     }
+  }
+  goBack(){
+    this.props.navigation.navigate('EditSellTicket', {itemState: this.state})
   }
 
   componentWillMount(){
@@ -180,9 +183,9 @@ export default class EditSellItemScreen extends React.Component{
 
         <Button
           style={{padding:5}}
-          title='Back to Edit Ticket'
+          title='Save Changes'
           color='#ffffff'
-          backgroundColor='#C00000'
+          backgroundColor='#bf1e2d'
           onPress={() => this.props.navigation.navigate('EditSellTicket', {itemState: this.state})}
         />
       </KeyboardAwareScrollView>

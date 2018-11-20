@@ -3,12 +3,13 @@ import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityI
 import { Avatar , Button, FormLabel, FormInput } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Picker, DatePicker, Form} from "native-base";
+import url from '../../constants/url';
 
 export default class EditPawnTicketScreen extends React.Component{
   static navigationOptions = {
-    title: 'Edit Ticket',
+    title: 'Edit Pawn Ticket',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -23,8 +24,8 @@ export default class EditPawnTicketScreen extends React.Component{
       pawnTicketID: this.props.navigation.getParam('pawnTicketID'),
       frontUri: this.props.navigation.getParam('frontUri'),
       backUri: this.props.navigation.getParam('backUri'),
-      pendingPawnTicket: {},
       item: {},
+      pendingPawnTicket:{},
       dateCreated: new Date() ,
       expiryDate: new Date(),
       gracePeriodEndDate: new Date(),
@@ -125,7 +126,7 @@ retrieveTickets(){
     return auth
   })
   .then((auth) => {
-  fetch('http://206.189.145.2:3000/admin/tickets/',{ //fetch from admin url
+  fetch(url.url + 'admin/tickets/',{ //fetch from admin url
     method: 'POST',
     headers: {
       //Accept: 'application/json',
@@ -157,17 +158,17 @@ retrieveTickets(){
 }
 getDateObject(date){
   if(Platform.OS==="ios"){
-     console.log("date: " + date);
+     //console.log("date: " + date);
     var currentDateString = date.toLocaleDateString("en-US", { day: "numeric", month: "numeric", year:"numeric" })
-     console.log("currentDateString: " + currentDateString)
+     //console.log("currentDateString: " + currentDateString)
     var arrayOfDateParts = currentDateString.split("/");
-     console.log("arrayOfDateParts: " + arrayOfDateParts)
+    // console.log("arrayOfDateParts: " + arrayOfDateParts)
     var month = arrayOfDateParts[0]
-     console.log('month: ' + month)
+    // console.log('month: ' + month)
     var day = arrayOfDateParts[1].substring(0, arrayOfDateParts[1].indexOf(","))
-     console.log('day: ' + day)
+    // console.log('day: ' + day)
     var year = arrayOfDateParts[2]
-     console.log('year: ' + year)
+    // console.log('year: ' + year)
     return new Date(year, month, day);
   }else{
     // console.log("date: " + date);
@@ -187,24 +188,29 @@ getDateObject(date){
   //approve the tickets
   approve(){
     console.log('approved method reached');
-
+    if (this.props.navigation.getParam('itemState')!=null){
+      this.setState({item: this.props.navigation.getParam('itemState')});
+    }
 
     this.props.navigation.navigate('PawnTicketApproval', {
       currentUserID: this.state.currentUserID,
       editedTicketState: {
-      "pawnTicketID":this.state.pawnTicketID,
-      "item": this.state.item,
-      "dateCreated": this.state.dateCreated,
-      "expiryDate": this.state.expiryDate,
-      "gracePeriodEndDate": this.state.gracePeriodEndDate,
-      "indicativeTotalInterestPayable": this.state.indicativeTotalInterestPayable,
-      "value": this.state.value,
-      "approved": this.state.approved,
-      "closed": this.state.closed,
-      "expired": this.state.expired,
-      "outstandingPrincipal": this.state.outstandingPrincipal,
-      "outstandingInterest": this.state.outstandingInterest,
-    }});
+        // "__v": this.state.__v,
+        // "_id": this.state._id,
+        "pawnTicketID":this.state.pawnTicketID,
+        "item": this.state.item,
+        "dateCreated": this.state.dateCreated,
+        "expiryDate": this.state.expiryDate,
+        "gracePeriodEndDate": this.state.gracePeriodEndDate,
+        "indicativeTotalInterestPayable": this.state.indicativeTotalInterestPayable,
+        "value": this.state.value,
+        "approved": this.state.approved,
+        "closed": this.state.closed,
+        "expired": this.state.expired,
+        "outstandingPrincipal": this.state.outstandingPrincipal,
+        "outstandingInterest": this.state.outstandingInterest
+      }
+    });
   }
   reject(){
     console.log('reject method reached');
@@ -218,9 +224,9 @@ getDateObject(date){
     if(this.state.loading){
       return <ActivityIndicator/>;
     }
-    if (this.props.navigation.getParam('itemState')!=null && this.state.item!=this.props.navigation.getParam('itemState')){
-      this.setState({item: this.props.navigation.getParam('itemState')});
-    }
+    // if (this.props.navigation.getParam('itemState')!=null && this.state.item!=this.props.navigation.getParam('itemState')){
+    //   this.setState({item: this.props.navigation.getParam('itemState')});
+    // }
     return(
       <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
         extraScrollHeight = {150}
@@ -319,7 +325,7 @@ getDateObject(date){
               // }}
               onChangeText={ indicativeTotalInterestPayable => this.setState({ indicativeTotalInterestPayable })}
               keyboardType={'phone-pad'}
-              defaultValue={this.state.indicativeTotalInterestPayable.toString()}
+              value={this.state.indicativeTotalInterestPayable.toString()}
               //value={this.state.indicativeTotalInterestPayable}
             />
           </View>
@@ -335,7 +341,7 @@ getDateObject(date){
               // }}
               onChangeText={ value => this.setState({ value })}
               keyboardType={'phone-pad'}
-              defaultValue={this.state.value.toString()}
+              value={this.state.value.toString()}
               //value={this.state.value}
             />
           </View>
@@ -355,7 +361,7 @@ getDateObject(date){
               // }}
               onChangeText={ outstandingPrincipal => this.setState({ outstandingPrincipal })}
               keyboardType={'phone-pad'}
-              defaultValue={this.state.outstandingPrincipal.toString()}
+              value={this.state.outstandingPrincipal.toString()}
               //value={this.state.outstandingPrincipal}
             />
           </View>
@@ -371,42 +377,44 @@ getDateObject(date){
               // }}
               onChangeText={ outstandingInterest => this.setState({ outstandingInterest })}
               keyboardType={'phone-pad'}
-              defaultValue={this.state.outstandingInterest.toString()}
+              value={this.state.outstandingInterest.toString()}
               //value={this.state.outstandingInterest}
             />
           </View>
 
 
           {/* Item */}
-          <Button
-            style={{padding:5}}
-            title='Edit Item'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {
-                this.props.navigation.navigate('EditPawnItem', {itemState: this.state.item})
+          <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'center', width: '100%', flexDirection:'row'}} >
+            <Button
+              style={{padding:5}}
+              title='Edit Item'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {
+                  this.props.navigation.navigate('EditPawnItem', {itemState: this.state.item})
+                }
               }
-            }
-          />
+            />
 
 
 
-          {/* Approve or reject buttons */}
-          <Button
-            style={{padding:5}}
-            title='Approve'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {this.approve()}}
-          />
+            {/* Approve or reject buttons */}
+            <Button
+              style={{padding:5}}
+              title='Approve'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {this.approve()}}
+            />
 
-          <Button
-            style={{padding:5}}
-            title='Reject'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {this.reject()}}
-          />
+            <Button
+              style={{padding:5}}
+              title='Reject'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {this.reject()}}
+            />
+          </View>
 
       </KeyboardAwareScrollView>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, AsyncStorage, ActivityIndicator } from 'react-native';
 import UserListDivider from './UserListDivider';
+import url from '../constants/url';
 
 export default class List extends React.Component {
   render(){
@@ -8,7 +9,7 @@ export default class List extends React.Component {
   }
   constructor(props){
     super(props)
-    console.log("1. construction");
+    console.log("1. construction of List");
     this.state={
       arrayOfUsers: [],
       loading: false,
@@ -22,7 +23,7 @@ export default class List extends React.Component {
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
-      fetch('http://206.189.145.2:3000/admin/allUsers', {
+      fetch(url.url + 'admin/allUsers', {
       method: 'GET',
       headers: new Headers({
         'x-auth' : token,
@@ -59,7 +60,6 @@ export default class List extends React.Component {
 
   renderThisArray(){
     console.log("5. rendering the array");
-    console.log("first user in array of users is " + this.state.arrayOfUsers[0])
     return <UserListDivider navigation={this.state.navigation} userList={this.state.arrayOfUsers.sort()}/>
   }
 

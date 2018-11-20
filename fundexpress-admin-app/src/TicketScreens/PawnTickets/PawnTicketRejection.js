@@ -1,12 +1,13 @@
 import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
+import url from '../../constants/url';
 
 export default class PawnTicketRejectionScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Rejection',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -30,7 +31,7 @@ export default class PawnTicketRejectionScreen extends React.Component{
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
-      fetch('http://206.189.145.2:3000/admin/rejectPawnTicket', {
+      fetch(url.url + 'admin/rejectPawnTicket', {
       method: 'POST',
       headers: new Headers({
         'x-auth' : token,
@@ -94,7 +95,7 @@ export default class PawnTicketRejectionScreen extends React.Component{
         <Text style={{fontSize:20}}>{this.state.successMessage.error}</Text>
         <View style={{marginTop:10}}>
           <Button
-            backgroundColor='#C00000'
+            backgroundColor='#bf1e2d'
             color='#FFFFFF'
             title='Back to User History'
             onPress={()=> this.props.navigation.navigate('UserHistory')}

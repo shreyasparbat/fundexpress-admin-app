@@ -19,15 +19,15 @@ import List from './components/List';
 class HomeScreen extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
-    title: "Home",
+    title: "Users",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
-    headerTintColor: '#ffffff',
+    headerTintColor: 'white',
     headerTitleStyle: {
       fontWeight: 'bold',
-      color: '#ffffff'
+      color: 'white'
     },
   });
 

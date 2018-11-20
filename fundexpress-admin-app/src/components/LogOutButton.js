@@ -1,6 +1,7 @@
 import React from 'react';
 import {View,  Icon, AsyncStorage } from 'react-native';
 import { Button } from 'react-native-elements';
+import url from '../constants/url';
 
 export default class LogOutButton extends React.Component{
 
@@ -21,7 +22,7 @@ export default class LogOutButton extends React.Component{
   }
   logOut() {
     this.retrieveData().then((token) =>{
-      fetch('http://206.189.145.2:3000/admin/logout', {
+      fetch(url.url + 'admin/logout', {
       method: 'DELETE',
       headers: new Headers({
         'x-auth' : token,
@@ -50,8 +51,8 @@ export default class LogOutButton extends React.Component{
       <View>
         <Button
           title='Log Out'
-          color='white'
-          backgroundColor='#C00000'
+          color='#ffffff'
+          backgroundColor='#bf1e2d'
           onPress={() => this.logOut()}
         />
       </View>

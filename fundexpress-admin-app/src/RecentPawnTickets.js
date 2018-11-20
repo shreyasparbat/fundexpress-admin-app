@@ -3,13 +3,14 @@ import { View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator, Asy
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PawnTicket from './components/PawnTicket';
 import LogOutButton from './components/LogOutButton';
+import url from './constants/url';
 
 export default class RecentPawnTicketsScreen extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: "Recent Tickets",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -44,7 +45,8 @@ export default class RecentPawnTicketsScreen extends React.Component {
     console.log("start of retrieveTickets in /admin/getTicketsPendingApproval")
     //normal client retrieve tickets
     this.retrieveData().then((auth) => {
-    fetch('http://206.189.145.2:3000/admin/getTicketsPendingApproval',{ //fetch from admin url
+    fetch(url.url + 'admin/getTicketsPendingApproval',{
+    //fetch('http://206.189.145.2:3000/admin/getTicketsPendingApproval',{
       method: 'POST',
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -84,8 +86,17 @@ export default class RecentPawnTicketsScreen extends React.Component {
     var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.jpg';
     return uri;
   }
+  sortByDateCreated(data){
+    data.sort(function(a, b) {
+        a = new Date(a.dateCreated);
+        b = new Date(b.dateCreated);
+        return a>b ? -1 : a<b ? 1 : 0;
+    });
+    return data;
+  }
 
   renderTickets(){
+
     return this.state.data.map(ticket =>
     <PawnTicket
       key={ticket._id}

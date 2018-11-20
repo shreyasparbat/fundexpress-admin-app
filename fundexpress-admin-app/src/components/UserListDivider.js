@@ -17,7 +17,7 @@ export default class UserListDivider extends Component {
 
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2,
     sectionHeaderHasChanged: (s1, s2) => s1 !== s2});
-    console.log('set datasource');
+
     this.state = {
         userList: props.userList,
         dataSource: ds.cloneWithRowsAndSections({}),
@@ -53,13 +53,17 @@ export default class UserListDivider extends Component {
       {'W': false},
       {'X': false},
       {'Y': false},
-      {'Z': false}
+      {'Z': false},
+      {'#': false}
     ];
     var max = dataSource.length
     for (i=0; i<max;i++){
       var firstLetter= dataSource[i].fullName.substring(0,1).toUpperCase();
       //console.log('this firstLetter is ' + firstLetter);
       var index = firstLetter.charCodeAt(0)-65;
+      if (Number.isInteger(index)==false){
+        index=26;
+      }
       //console.log('this index is '+index);
       alphabets[index].value = true;
     }

@@ -2,13 +2,14 @@ import React from 'react';
 import { Image, Text, Linking, ListView, View, TouchableOpacity, FlatList, AsyncStorage, ScrollView } from 'react-native';
 import { Container,  Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body } from 'native-base';
 import SellTicket from '../../components/SellTicket';
+import url from '../../constants/url';
 
 class PendingSellTickets extends React.Component {
   //header
   static navigationOptions = {
     title: 'Currently Pawned Items',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -41,7 +42,7 @@ class PendingSellTickets extends React.Component {
     console.log("start of retrieveTickets in pendingSellTickets")
     //normal client retrieve tickets
     this.retrieveData().then((auth) => {
-    fetch('http://206.189.145.2:3000/admin/tickets/',{ //fetch from admin url
+    fetch(url.url +'admin/tickets/',{ //fetch from admin url
       method: 'POST',
       headers: {
         //Accept: 'application/json',

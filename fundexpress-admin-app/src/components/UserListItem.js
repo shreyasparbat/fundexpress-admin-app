@@ -49,9 +49,11 @@ export default class UserListItem extends Component {
       var currentUser = this.getOnlyUsersWithAParticularLetter(this.state.currentLetter, this.state.userList).dataSource[rowID];
       // console.log(currentUser);
       return (
-            <ListItem>
-              <Text  onPress={() => this.state.navigation.navigate('UserHistory', {currentUserID: currentUser._id})}>{currentUser.fullName}</Text>
+          <TouchableOpacity>
+            <ListItem  onPress={() => this.state.navigation.navigate('UserHistory', {currentUserID: currentUser._id})}> 
+              <Text>{currentUser.fullName}</Text>
             </ListItem>
+          </TouchableOpacity>
       );
   }
 

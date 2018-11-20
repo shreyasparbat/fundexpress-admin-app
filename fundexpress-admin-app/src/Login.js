@@ -2,6 +2,7 @@ import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, navigationOptions } from 'react-navigation';
 import { Button } from 'react-native-elements';
+import url from './constants/url';
 
 //custom components
 import { Input } from './components/Input';
@@ -54,6 +55,11 @@ import RecentTicketsScreen from './RecentTickets';
 import RecentPawnTicketsScreen from './RecentPawnTickets';
 import RecentSellTicketsScreen from './RecentSellTickets';
 
+//Admin Functions
+import AdminFunctionsScreen from './AdminFunctions/AdminFunctions';
+import UpdateInterestRateScreen from './AdminFunctions/UpdateInterestRate';
+import OnboardNewAdminScreen from './AdminFunctions/OnboardNewAdmin';
+
 //ImageView
 import ImageView from './components/ImageView';
 
@@ -103,7 +109,7 @@ class LoginScreen extends React.Component {
         <Button
           title='Log in'
           color='white'
-          backgroundColor='#C00000'
+          backgroundColor='#bf1e2d'
           //onPress={() => this.props.navigation.navigate('Home')}
           onPress={() => this.onButtonPress()}
 
@@ -124,7 +130,7 @@ class LoginScreen extends React.Component {
       password: this.state.password
     }
 
-   fetch('http://206.189.145.2:3000/user/adminLogin', {
+   fetch(url.url + 'user/adminLogin', {
       method: 'POST',
       headers:{
         Accept: 'application/json',
@@ -171,7 +177,7 @@ class LoginScreen extends React.Component {
       error: '',
      });
      //console.log(this.retrieveData());
-     this.props.navigation.navigate('Home');
+     this.props.navigation.navigate('TicketsMain');
   }
 
   render() {
@@ -240,6 +246,22 @@ const RootStack = createStackNavigator({
   },
     mainFlow : {
       screen: createBottomTabNavigator({
+        "Admin Functions": {
+          screen: createStackNavigator({
+            AdminMain: {screen: AdminFunctionsScreen},
+            UpdateInterestRate: {screen: UpdateInterestRateScreen},
+            OnboardNewAdmin: {screen: OnboardNewAdminScreen},
+          }),
+          navigationOptions: {
+            initialRouteName: 'AdminMain',
+            tabBarIcon: ({ focused, tintColor }) => {
+              return <Ionicons name={'md-construct'} size={25}
+              color={'white'} />;
+            },
+            swipeEnabled: false,
+            gesturesEnabled: false,
+          }
+        },
         Tickets: {
           screen: createStackNavigator({
             TicketsMain: {screen: RecentTicketsScreen},
@@ -249,14 +271,14 @@ const RootStack = createStackNavigator({
           navigationOptions: {
             initialRouteName: 'TicketsMain',
             tabBarIcon: ({ focused, tintColor }) => {
-              return <Ionicons name={'md-contact'} size={25}
+              return <Ionicons name={'md-home'} size={25}
               color={'white'} />;
             },
             swipeEnabled: false,
             gesturesEnabled: false,
           }
         },
-        Home: {
+        Users: {
           screen: createStackNavigator({
             main:{screen: HomeScreen},
             LogOut : {screen: LogOutButton},
@@ -286,7 +308,7 @@ const RootStack = createStackNavigator({
             hardwareBackPress: true,
             initialRouteName: 'main',
             tabBarIcon: ({ focused, tintColor }) => {
-              return <Ionicons name={'md-home'} size={25}
+              return <Ionicons name={'md-contact'} size={25}
               color={'white'} />;
             },
           }
@@ -296,20 +318,20 @@ const RootStack = createStackNavigator({
       initialRouteName: 'Tickets',
       activeTintColor: 'white',
       inactiveTintColor: 'white',
-      barStyle: { backgroundColor: '#C00000' },
+      barStyle: { backgroundColor: '#bf1e2d' },
       tabBarOptions: {
         activeTintColor: 'white',
         inactiveTintColor: 'white',
         fontWeight: 'bold',
         style: {
-          backgroundColor: '#C00000',
+          backgroundColor: '#bf1e2d',
         }
       }
     }
   ),
   navigationOptions: {
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {

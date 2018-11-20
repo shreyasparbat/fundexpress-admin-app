@@ -12,7 +12,7 @@ class AllPawnTicketsScreen extends React.Component {
   static navigationOptions = {
     title: 'Pawn Tickets',
       headerStyle: {
-        backgroundColor: '#C00000',
+        backgroundColor: '#bf1e2d',
       },
       headerTintColor: '#ffffff',
       headerTitleStyle: {
@@ -22,23 +22,23 @@ class AllPawnTicketsScreen extends React.Component {
   };
 
   render() {
-    const currentUser = this.props.navigation.getParam('currentUserID');
+    const currentUserID = this.props.navigation.getParam('currentUserID');
     console.log('AllPawnTickets currentUserID: ' +  currentUserID);
     return (
-      <Container >
-      <Tabs>
-        <Tab heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}} ><Icon name='list' style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}> Current</Text></TabHeading>}  >
+      <View style={{flex:1,backgroundColor:'white'}}>
+      <Tabs tabBarUnderlineStyle={{backgroundColor:'#bf1e2d'}}>
+        <Tab heading={ <TabHeading style={{backgroundColor:'white',borderColor:'white'}} ><Icon name='list' style={{color:'#000000'}}/><Text style={{color:'#000000'}}> Current</Text></TabHeading>}  >
           <CurrentPawnTickets navigation={this.props.navigation} currentUserID={currentUserID} />
         </Tab>
-        <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='add-to-list'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}> Pending</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+        <Tab  heading={ <TabHeading style={{backgroundColor:'white',borderColor:'white'}}><Icon name='add-to-list'  style={{color:'#000000'}}/><Text style={{color:'#000000'}}> Pending</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
           <PendingPawnTickets  navigation={this.props.navigation} currentUserID={currentUserID} />
         </Tab>
-        <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name='back-in-time'  style={{color:'#ffffff'}}/><Text style={{color:'#ffffff'}}> Past</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+        <Tab  heading={ <TabHeading style={{backgroundColor:'white',borderColor:'white'}}><Icon name='back-in-time'  style={{color:'#000000'}}/><Text style={{color:'#000000'}}> Past</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
           <PastPawnTickets  navigation={this.props.navigation} currentUserID={currentUserID} />
         </Tab>
       </Tabs>
 
-      </Container>
+      </View>
 
     );
   }

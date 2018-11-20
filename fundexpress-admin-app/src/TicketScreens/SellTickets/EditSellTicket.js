@@ -3,12 +3,13 @@ import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityI
 import { Avatar , Button, FormLabel, FormInput } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon, Picker, DatePicker, Form} from "native-base";
+import url from '../../constants/url';
 
 export default class EditSellTicketScreen extends React.Component{
   static navigationOptions = {
-    title: 'Edit Ticket',
+    title: 'Edit Sell Ticket',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -24,6 +25,7 @@ export default class EditSellTicketScreen extends React.Component{
       frontUri: this.props.navigation.getParam('frontUri'),
       backUri: this.props.navigation.getParam('backUri'),
       item: {},
+      pendingSellTicket:{},
       dateCreated: new Date() ,
       value: 0,
       approved: false,
@@ -117,7 +119,8 @@ retrieveTickets(){
     return auth
   })
   .then((auth) => {
-  fetch('http://206.189.145.2:3000/admin/tickets/',{ //fetch from admin url
+
+  fetch(url.url + 'admin/tickets/',{ //fetch from admin url
     method: 'POST',
     headers: {
       //Accept: 'application/json',
@@ -267,32 +270,35 @@ getDateObject(date){
 
 
           {/* Item */}
-          <Button
-            style={{padding:5}}
-            title='Edit Item'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {this.props.navigation.navigate('EditSellItem', {itemState: this.state.item})}}
-          />
+          <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'center', width: '100%', flexDirection:'row'}} >
+
+            <Button
+              style={{padding:5}}
+              title='Edit Item'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {this.props.navigation.navigate('EditSellItem', {itemState: this.state.item})}}
+            />
 
 
 
-          {/* Approve or reject buttons */}
-          <Button
-            style={{padding:5}}
-            title='Approve'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {this.approve()}}
-          />
+            {/* Approve or reject buttons */}
+            <Button
+              style={{padding:5}}
+              title='Approve'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {this.approve()}}
+            />
 
-          <Button
-            style={{padding:5}}
-            title='Reject'
-            color='#ffffff'
-            backgroundColor='#C00000'
-            onPress={() => {this.reject()}}
-          />
+            <Button
+              style={{padding:5}}
+              title='Reject'
+              color='#ffffff'
+              backgroundColor='#bf1e2d'
+              onPress={() => {this.reject()}}
+            />
+          </View>
 
       </KeyboardAwareScrollView>
     );

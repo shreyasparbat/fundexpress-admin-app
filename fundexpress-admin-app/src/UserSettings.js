@@ -5,6 +5,8 @@ import { GiftedForm } from 'react-native-gifted-form';
 import LogOutButton from './components/LogOutButton';
 import { Picker, Icon, DatePicker } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import url from './constants/url';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default class UserSettingsScreen extends React.Component {
 
@@ -12,7 +14,7 @@ export default class UserSettingsScreen extends React.Component {
     title: "User Settings",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -32,10 +34,10 @@ export default class UserSettingsScreen extends React.Component {
         password: '',
         fullName: '',
         gender: '',
-        dateOfBirth: '',
+        dateOfBirth: new Date().toString(),
         ic: '',
-        mobileNumber: 0,
-        landlineNumber: 0,
+        mobileNumber: '00000000',
+        landlineNumber: '00000000',
         address: '',
         addressType:'',
         citizenship: '',
@@ -47,9 +49,11 @@ export default class UserSettingsScreen extends React.Component {
         initialLtvPercentage: 0,
         currentCreditRating: 0,
         currentLtvPercentage: 0,
-        registrationComplete: false,
+        registrationCompleted: false,
         loading:false,
         currentUserID: this.props.navigation.getParam('currentUserID'),
+        error:'',
+        showAlert: false,
     }
     console.log("1. User Settings Screen initialised: " + this.state)
   }
@@ -60,7 +64,8 @@ export default class UserSettingsScreen extends React.Component {
     this.retrieveData().then((auth) => {
       console.log("auth: " + auth)
       console.log("currentUserID: " +this.state.currentUserID)
-    fetch('http://206.189.145.2:3000/admin/getUser/',{ //fetch from admin url
+    fetch(url.url + 'admin/getUser/',{ //fetch from admin url
+    //fetch('http://206.189.145.2:3000/admin/getUser/',{ //fetch from admin url
       method: 'POST',
       headers: {
         //Accept: 'application/json',
@@ -79,28 +84,45 @@ export default class UserSettingsScreen extends React.Component {
     })
     .then((response) => {
       console.log("6. set state");
-      this.setState({
-        email: response.email,
-        fullName: response.fullName,
-        gender: response.gender,
-        dateOfBirth: response.dateOfBirth,
-        ic: response.ic,
-        landlineNumber: response.landlineNumber,
-        mobileNumber: response.mobileNumber,
-        address: response.address,
-        addressType: response.addressType,
-        citizenship: response.citizenship,
-        race:response.race,
-        noOfC:response.noOfC,
-        noOfL:response.noOfL,
-        noOfD:response.noOfD,
-        initialCreditRating:response.initialCreditRating,
-        initialLtvPercentage:response.initialLtvPercentage,
-        currentCreditRating:response.currentCreditRating,
-        currentLtvPercentage:response.currentLtvPercentage,
-        registrationComplete:response.registrationComplete,
-        loading:false
-      })
+      if (response.registrationCompleted==true){
+        this.setState({
+          email: response.email,
+          fullName: response.fullName,
+          gender: response.gender,
+          dateOfBirth: response.dateOfBirth,
+          ic: response.ic,
+          landlineNumber: response.landlineNumber,
+          mobileNumber: response.mobileNumber,
+          address: response.address,
+          addressType: response.addressType,
+          citizenship: response.citizenship,
+          race:response.race,
+          noOfC:response.noOfC,
+          noOfL:response.noOfL,
+          noOfD:response.noOfD,
+          initialCreditRating:response.initialCreditRating,
+          initialLtvPercentage:response.initialLtvPercentage,
+          currentCreditRating:response.currentCreditRating,
+          currentLtvPercentage:response.currentLtvPercentage,
+          registrationCompleted:response.registrationCompleted,
+          loading:false
+        })
+      } else {
+        this.setState({
+          email: response.email,
+          fullName: response.fullName,
+          noOfC:response.noOfC,
+          noOfL:response.noOfL,
+          noOfD:response.noOfD,
+          initialCreditRating:response.initialCreditRating,
+          initialLtvPercentage:response.initialLtvPercentage,
+          currentCreditRating:response.currentCreditRating,
+          currentLtvPercentage:response.currentLtvPercentage,
+          registrationCompleted:response.registrationCompleted,
+          loading:false
+        })
+      }
+
       console.log("7. finished setting state")
       console.log(this.state.email)
       console.log(this.state.fullName)
@@ -124,105 +146,90 @@ export default class UserSettingsScreen extends React.Component {
     }
   }
   submit() {
-    console.log("userID: " + this.state.currentUserID)
-    console.log("EMAIL: " + this.state.email)
-    console.log("FULLNAME: " + this.state.fullName)
-    console.log("GENDER: " + this.state.gender)
-    console.log("DOB: " + this.state.dateOfBirth)
-    console.log("IC: " + this.state.ic)
-    console.log("MOBILE NUMBER: " + this.state.mobileNumber)
-    console.log("landlineNumber: " + this.state.landlineNumber)
-    console.log("address: " + this.state.address)
-    console.log("addressType: " + this.state.addressType)
-    console.log("citizenship: " + this.state.citizenship)
-    console.log("race: " + this.state.race)
-    console.log("noOfC: " + this.state.noOfC)
-    console.log("noOfL: " + this.state.noOfL)
-    console.log("noOfD: " + this.state.noOfD)
-    console.log("initialCreditRating: " + this.state.initialCreditRating)
-    console.log("initialLtvPercentage: " + this.state.initialLtvPercentage)
-    console.log("currentCreditRating: " + this.state.currentCreditRating)
-    console.log("currentLtvPercentage: " + this.state.currentLtvPercentage)
-    console.log("registrationComplete: " + this.state.registrationComplete)
+    // console.log("userID: " + this.state.currentUserID)
+    // console.log("EMAIL: " + this.state.email)
+    // console.log("FULLNAME: " + this.state.fullName)
+    // console.log("GENDER: " + this.state.gender)
+    // console.log("DOB: " + this.state.dateOfBirth)
+    // console.log("IC: " + this.state.ic)
+    // console.log("MOBILE NUMBER: " + this.state.mobileNumber)
+    // console.log("landlineNumber: " + this.state.landlineNumber)
+    // console.log("address: " + this.state.address)
+    // console.log("addressType: " + this.state.addressType)
+    // console.log("citizenship: " + this.state.citizenship)
+    // console.log("race: " + this.state.race)
+    // console.log("noOfC: " + this.state.noOfC)
+    // console.log("noOfL: " + this.state.noOfL)
+    // console.log("noOfD: " + this.state.noOfD)
+    // console.log("initialCreditRating: " + this.state.initialCreditRating)
+    // console.log("initialLtvPercentage: " + this.state.initialLtvPercentage)
+    // console.log("currentCreditRating: " + this.state.currentCreditRating)
+    // console.log("currentLtvPercentage: " + this.state.currentLtvPercentage)
+    // console.log("registrationCompleted: " + this.state.registrationCompleted)
 
 
     this.retrieveData().then((token) => {
-      fetch('http://206.189.145.2:3000/admin/updateUser',{
+      fetch(url.url + 'admin/updateUser',{
         method: 'POST',
         headers: new Headers({
           'Content-Type':'application/json',
           'x-auth': token,
         }),
         body: JSON.stringify({
-          userID:this.state.currentUserID,
-          email: this.state.email,
-          fullName: this.state.fullName,
-          gender: this.state.gender,
-          dateOfBirth: this.state.dateOfBirth,
-          ic: this.state.ic,
-          mobileNumber: parseInt(this.state.mobileNumber),
-          landlineNumber: parseInt(this.state.landlineNumber),
-          address: this.state.address,
-          addressType: this.state.addressType,
-          citizenship: this.state.citizenship,
-          race: this.state.race,
-          noOfC: this.state.noOfC,
-          noOfL: this.state.noOfL,
-          noOfD: this.state.noOfD,
-          initialCreditRating:this.state.initialCreditRating,
-          initialLtvPercentage:this.state.initialLtvPercentage,
-          currentCreditRating:this.state.currentCreditRating,
-          currentLtvPercentage:this.state.currentLtvPercentage,
-          registrationComplete:this.state.registrationComplete,
+          "userID" :this.state.currentUserID,
+          "email": this.state.email,
+          "fullName": this.state.fullName,
+          "gender": this.state.gender,
+          "dateOfBirth": this.state.dateOfBirth,
+          "ic": this.state.ic,
+          "mobileNumber": parseInt(this.state.mobileNumber),
+          "landlineNumber": parseInt(this.state.landlineNumber),
+          "address": this.state.address,
+          "addressType": this.state.addressType,
+          "citizenship": this.state.citizenship,
+          "race": this.state.race,
+          "noOfC": this.state.noOfC,
+          "noOfL": this.state.noOfL,
+          "noOfD": this.state.noOfD,
+          "initialCreditRating":this.state.initialCreditRating,
+          "initialLtvPercentage":this.state.initialLtvPercentage,
+          "currentCreditRating":this.state.currentCreditRating,
+          "currentLtvPercentage":this.state.currentLtvPercentage,
+          "registrationCompleted":this.state.registrationCompleted
         }),
       })
-    })
       .then((response) => {
         console.log("4. response.ok: " + response.ok)
-        return response.json()
-      })
-      .then((response) => {
-        console.log("5. response.json" + response)
-        this.setState({
-          userID:response.currentUserID,
-          email: response.email,
-          fullName: response.fullName,
-          gender: response.gender,
-          dateOfBirth: response.dateOfBirth,
-          ic: response.ic,
-          landlineNumber: response.landlineNumber,
-          mobileNumber: response.mobileNumber,
-          address: response.address,
-          addressType: response.addressType,
-          citizenship: response.citizenship,
-          race:response.race,
-          noOfC:response.noOfC,
-          noOfL:response.noOfL,
-          noOfD:response.noOfD,
-          initialCreditRating:response.initialCreditRating,
-          initialLtvPercentage:response.initialLtvPercentage,
-          currentCreditRating:response.currentCreditRating,
-          currentLtvPercentage:response.currentLtvPercentage,
-          registrationComplete:response.registrationComplete,
-          loading:false
-        })
-        // console.log("profile changed")
-        // this.props.navigation.navigate('Profile');
-      })
-      .catch((errorResponse) => {
-        console.log("error")
-        console.log(errorResponse)
+        if(response.ok){
+          this.setState({
+            error: 'User successfully updated',
+            showAlert:true
+          })
+        } else {
+          this.setState({
+            error: 'Could not update user, please try again',
+            showAlert:true
+          })
+        }
       })
       .catch((errorResponse) => {
         console.log("error with admin/updateUser ")
         console.log(errorResponse)
       })
-      .catch((error) => {
-        console.log("error updating user data")
-        console.log(error)
-      });
-    }
+    });
+  }
+  //this shows/hides the alerts popup
+  showAlert = () => {
+    this.setState({
+      showAlert: true
+    });
+  };
 
+  hideAlert = () => {
+    this.setState({
+      showAlert: false,
+    });
+  };
   render() {
     if(this.state.loading){
       return <ActivityIndicator/>;
@@ -232,6 +239,7 @@ export default class UserSettingsScreen extends React.Component {
         extraScrollHeight = {150}
         keyboardOpeningTime = {10}
       >
+
        {/* email */}
        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
          <FormLabel>Email</FormLabel>
@@ -432,73 +440,51 @@ export default class UserSettingsScreen extends React.Component {
           />
         </View>
 
-        {/**/}
+        {/* initialLtvPercentage */}
         <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
-          <FormLabel>Ethereum Hash</FormLabel>
+          <FormLabel>Initial LTV Percentage</FormLabel>
           <FormInput
-            onChangeText={ ethHash => this.setState({ ethHash })}
-            value={this.state.ethHash}
+            onChangeText={initialLtvPercentage => this.setState({ initialLtvPercentage })}
+            value={this.state.initialLtvPercentage.toString()}
           />
         </View>
+
+        {/* currentLtvPercentage */}
+        <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
+          <FormLabel>Current LTV Percentage</FormLabel>
+          <FormInput
+            onChangeText={currentLtvPercentage => this.setState({ currentLtvPercentage })}
+            value={this.state.currentLtvPercentage.toString()}
+          />
+        </View>
+
 
         {/* submit button*/}
         <Button
           title='Submit Changes'
           color='white'
-          backgroundColor='#C00000'
+          backgroundColor='#bf1e2d'
           onPress={() => this.submit()}
           containerViewStyle={{marginTop:30,marginBottom:30}}
+        />
+        <AwesomeAlert
+            style={{modalContainer:{flex:5}}}
+            show= {this.state.showAlert}
+            title="User Settings"
+            message={this.state.error}
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={false}
+            showCancelButton={false}
+            showConfirmButton={true}
+            confirmButtonColor="#bf1e2d"
+            confirmText="Close"
+            onConfirmPressed={() => {
+
+                this.hideAlert();
+            }}
         />
 
       </KeyboardAwareScrollView>
     );
   }
 }
-
-//org
-  // this.retrieveData().then((token) => {
-  //   this.setState({loading:true});
-  //   fetch('http://206.189.145.2:3000/admin/getUser', {
-  //   method: 'POST',
-  //   headers: new Headers({
-  //     // Accept: 'application/json',
-  //     'Content-Type': 'application/json',
-  //     'x-auth' : token,
-  //   }),
-  //   body: JSON.stringify({
-  //     userID: this.state.currentUserID
-  //   })
-  // })
-  //   .then((response) => {
-  //     console.log("4. response.ok: " + response.ok);
-  //     return response.json()
-  //   })
-  //   .then((response) => {
-  //     console.log("5. profile retrieved")
-  //     this.setState({
-  //       data: response,
-  //       // email: response.email,
-  //       // fullName: response.fullName,
-  //       // gender: response.gender,
-  //       // dateOfBirth: response.dateOfBirth,
-  //       // ic: response.ic,
-  //       // landlineNumber: response.landlineNumber,
-  //       // mobileNumber: response.mobileNumber,
-  //       // address: response.address,
-  //       // addressType: response.addressType,
-  //       // citizenship: response.citizenship,
-  //       // race:response.race,
-  //       // noOfC:response.noOfC,
-  //       // noOfL:response.noOfL,
-  //       // noOfD:response.noOfD,
-  //       // ethHash:response.ethHash,
-  //       loading:false,
-  //     });
-  //     console.log("6. current state is " + this.state)
-  //     //console.log("state fullName: " + this.state.fullName)
-  //   })
-  //   .catch((error) => {
-  //     console.log("error")
-  //     console.log(error)
-  //   })
-  // })

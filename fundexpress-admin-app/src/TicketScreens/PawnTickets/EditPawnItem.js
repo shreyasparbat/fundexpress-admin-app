@@ -10,7 +10,7 @@ export default class EditPawnItemScreen extends React.Component{
   static navigationOptions = {
     title: 'Edit Item',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -20,6 +20,20 @@ export default class EditPawnItemScreen extends React.Component{
   };
   constructor(props){
     super(props)
+    this.state={
+      name: '',
+      type: '',
+      material: '',
+      condition: 'NA',
+      weight: 0,
+      dateOfPurchase: new Date(),
+      meltingPercentage: 0,
+      sellPercentage: 0,
+      brand: '',
+      otherComments: '',
+      pawnOfferedValue: 0,
+      sellOfferedValue: 0,
+    }
     this.state={
       _id: "",
       userID: "",
@@ -37,8 +51,10 @@ export default class EditPawnItemScreen extends React.Component{
       pawnOfferedValue: 0,
       sellOfferedValue: 0,
       sellPercentage: 0,
-      loading:false,
     }
+  }
+  goBack(){
+    this.props.navigation.navigate('EditPawnTicket', {itemState: this.state})
   }
 
   componentWillMount(){
@@ -56,19 +72,19 @@ export default class EditPawnItemScreen extends React.Component{
       material: itemState.material,
       name: itemState.name,
       otherComments: itemState.otherComments,
-      //purity: itemState.purity,
+      purity: itemState.purity,
       weight: itemState.weight,
       meltingPercentage: itemState.meltingPercentage,
       pawnOfferedValue: itemState.pawnOfferedValue,
       sellOfferedValue: itemState.sellOfferedValue,
-      sellPercentage: itemState.sellPercentage,
-      loading:false,
+      sellPercentage: itemState.sellPercentage
     })
+
   }
   render(){
-    if(this.state.loading){
-      return <ActivityIndicator/>
-    }
+    // if(this.state.loading){
+    //   return <ActivityIndicator/>
+    // }
     return(
       <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
         extraScrollHeight = {150}
@@ -195,32 +211,28 @@ export default class EditPawnItemScreen extends React.Component{
 
         <Button
           style={{padding:5}}
-          title='Back to Edit Ticket'
+          title='Save Changes'
           color='#ffffff'
-          backgroundColor='#C00000'
-          onPress={() => this.props.navigation.navigate('EditPawnTicket', {itemState: {
-            _id: this.state._id,
-            __v: this.state.__v,
-            userID: this.state.userID,
-            type: this.state.type,
-            __v: this.state.__v,
-            brand: this.state.brand,
-            condition: this.state.condition,
-            dateOfPurchase: this.state.dateOfPurchase,
-            material: this.state.material,
-            name: this.state.name,
-            otherComments: this.state.otherComments,
-            //purity: this.state.purity,
-            weight: this.state.weight,
-            meltingPercentage: this.state.meltingPercentage,
-            pawnOfferedValue: this.state.pawnOfferedValue,
-            sellOfferedValue: this.state.sellOfferedValue,
-            sellPercentage: this.state.sellPercentage,
-
-
-          }})}
+          backgroundColor='#bf1e2d'
+          onPress={() => this.props.navigation.navigate('EditPawnTicket', {itemState: this.state})}
         />
       </KeyboardAwareScrollView>
     );
   }
 }
+// _id: this.state._id,
+// __v: this.state.__v,
+// userID: this.state.userID,
+// type: this.state.type,
+// brand: this.state.brand,
+// condition: this.state.condition,
+// dateOfPurchase: this.state.dateOfPurchase,
+// material: this.state.material,
+// name: this.state.name,
+// otherComments: this.state.otherComments,
+// purity: this.state.purity,
+// weight: this.state.weight,
+// meltingPercentage: this.state.meltingPercentage,
+// pawnOfferedValue: this.state.pawnOfferedValue,
+// sellOfferedValue: this.state.sellOfferedValue,
+// sellPercentage: this.state.sellPercentage

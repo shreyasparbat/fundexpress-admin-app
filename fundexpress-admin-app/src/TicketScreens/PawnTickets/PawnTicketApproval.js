@@ -2,12 +2,13 @@ import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import url from '../../constants/url';
 
 export default class PawnTicketApprovalScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Approval',
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -31,10 +32,10 @@ export default class PawnTicketApprovalScreen extends React.Component{
     this.setState({loading: true});
     console.log('2. componentWillMount and set loading');
     console.log("3. the body is {" +
-      "pawnTicketID" + this.state.editedTicketState.pawnTicketID+
-      "item"+ this.state.editedTicketState.item+
-      "dateCreated"+ this.state.editedTicketState.dateCreated+
-      "expiryDate"+ this.state.editedTicketState.expiryDate+
+      "pawnTicketID :" + this.state.editedTicketState.pawnTicketID+"\r\n" +
+      "item"+ this.state.editedTicketState.item+"\r\n" +
+      "dateCreated"+ this.state.editedTicketState.dateCreated+"\r\n" +
+      "expiryDate"+ this.state.editedTicketState.expiryDate+"\r\n" +
       "gracePeriodEndDate"+ this.state.editedTicketState.gracePeriodEndDate+"\r\n" +
       "indicativeTotalInterestPayable"+ this.state.editedTicketState.indicativeTotalInterestPayable+"\r\n" +
       "value"+ this.state.editedTicketState.value+"\r\n" +
@@ -50,7 +51,7 @@ export default class PawnTicketApprovalScreen extends React.Component{
 
     this.setState({loading: true})
     this.retrieveData().then((token) =>{
-      fetch('http://206.189.145.2:3000/admin/approvePawnTicket', {
+      fetch(url.url + 'admin/approvePawnTicket', {
       method: 'POST',
       headers: new Headers({
         'x-auth' : token,
@@ -58,8 +59,8 @@ export default class PawnTicketApprovalScreen extends React.Component{
       }),
       body: JSON.stringify(
         {
-          "__v": this.state.editedTicketState.__v,
-          "_id": this.state.editedTicketState._id,
+          // "_id": this.state.editedTicketState._id,
+          // "__v": this.state.editedTicketState.__v,
           "pawnTicketID":this.state.editedTicketState.pawnTicketID,
           "item": this.state.editedTicketState.item,
           "dateCreated": this.state.editedTicketState.dateCreated,
@@ -137,7 +138,7 @@ export default class PawnTicketApprovalScreen extends React.Component{
 
         <View style={{marginTop:10}}>
           <Button
-            backgroundColor='#C00000'
+            backgroundColor='#bf1e2d'
             color='#FFFFFF'
             title='Back to User History'
             onPress={()=> this.props.navigation.navigate('UserHistory', {currentUserID: this.state.currentUserID})}

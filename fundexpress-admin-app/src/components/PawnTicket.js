@@ -7,7 +7,7 @@ const styles = {
   buttonStyle: {
     margin: 5,
     height:35,
-    backgroundColor: '#C00000',
+    backgroundColor: '#bf1e2d',
     width:150,
     justifyContent: 'center'
   }
@@ -24,13 +24,13 @@ export default class PawnTicket extends React.Component {
       dateCreated: new Date(props.data.dateCreated),
       expiryDate: new Date(props.data.expiryDate),
       gracePeriodEndDate: new Date(props.data.gracePeriodEndDate),
-      indicativeTotalInterestPayable: props.data.indicativeTotalInterestPayable,
+      indicativeTotalInterestPayable: this.roundTo(props.data.indicativeTotalInterestPayable),
       value: props.data.value,
       approvalStatus: props.data.approved,
       closed: props.data.closed,
       expired: props.data.expired,
-      outstandingPrincipal:props.data.outstandingPrincipal,
-      outstandingInterest: props.data.outstandingInterest,
+      outstandingPrincipal:this.roundTo(props.data.outstandingPrincipal),
+      outstandingInterest: this.roundTo(props.data.outstandingInterest),
       frontUri:'',
       backUri:'',
       loading: false,
@@ -90,7 +90,7 @@ export default class PawnTicket extends React.Component {
     green: everything else
     */
     if (remainingDays <=0) {
-      return "#C00000"; //return red if remainingDays is negative
+      return "#bf1e2d"; //return red if remainingDays is negative
     } else if (remainingDays <= 7) {
       return "#FFc000"; // return yellow if there are 7 or less remainingDays
     } else {
@@ -149,11 +149,9 @@ export default class PawnTicket extends React.Component {
 
   render(){
     console.log("currentUserID" + this.state.currentUserID);
-    console.log("frontUri: " + this.state.frontUri);
-    console.log("backUri: " + this.state.backUri);
     return(
       <View>
-            <Card style={{flex: 0}}>
+            <Card style={{flex: 1}}>
               <CardItem>
               <Left>
               <Image
@@ -174,25 +172,32 @@ export default class PawnTicket extends React.Component {
                         color={this.getProgressBarColor(this.state.dateCreated, this.state.expiryDate)}
                     />
 
+                    {/* // label for date under the ProgressBar */}
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={{width:85}}>Date Created:</Text>
+                      <Text style={{width:85, textAlign: 'right'}}>Expiry Date:</Text>
+                    </View>
+
                     {/* // date under the ProgressBar */}
                     <View style={{flexDirection: 'row', marginBottom: 10}}>
                       <Text style={{width:85}}>{this.getDateNicelyFormatted(this.state.dateCreated)}</Text>
                       <Text style={{width:85, textAlign: 'right'}}>{this.getDateNicelyFormatted(this.state.expiryDate)}</Text>
                     </View>
 
-                    {/* //pawn amount and interestPayable */}
+
+                    {/* //outstandingPrincipal and outstandingInterest */}
                     <View style={{flexDirection: 'row', padding: 5}}>
                       {/* //column 1 */}
                       <View style={{flexDirection: 'column', backgroundColor: '#d3d3d3'}}>
-                        <Text>Pawn amount: </Text>
-                        <Text>Interest Payable: </Text>
+                        <Text>Outstanding Principal: </Text>
+                        <Text>Outstanding Interest: </Text>
 
                       </View>
                       {/* //column 2 */}
                       {/* //${Math.round(this.state.offeredValue)} */}
                       <View style={{flexDirection: 'column'}}>
-                        <Text>{this.roundTo(this.state.item.pawnOfferedValue)}</Text>
-                        <Text>{this.roundTo(this.state.indicativeTotalInterestPayable)}</Text>
+                        <Text>{this.roundTo(this.state.outstandingPrincipal)}</Text>
+                        <Text>{this.roundTo(this.state.outstandingInterest)}</Text>
                       </View>
                     </View>
 

@@ -12,7 +12,7 @@ export default class RecentTicketsScreen extends React.Component {
     title: "Recent Tickets",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
-      backgroundColor: '#C00000',
+      backgroundColor: '#bf1e2d',
     },
     headerTintColor: '#ffffff',
     headerTitleStyle: {
@@ -34,17 +34,17 @@ export default class RecentTicketsScreen extends React.Component {
   render() {
 
     return (
-      <Container >
-      <Tabs>
-        <Tab heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}} ><Icon name={'ticket'} size={10} color={'#FFFFFF'} /><Text style={{color:'#ffffff'}}>Pawn Tickets</Text></TabHeading>}  >
+      <View style={{flex:1,backgroundColor:'white'}}>
+      <Tabs tabBarUnderlineStyle={{backgroundColor:'#bf1e2d'}}>
+        <Tab heading={ <TabHeading style={{backgroundColor:'#ffffff',borderColor:'#ffffff'}} ><Icon name={'ticket'} size={10} color={'#000000'} /><Text style={{color:'#000000'}}> Pawn Tickets</Text></TabHeading>}  >
           <RecentPawnTicketsScreen navigation={this.props.navigation}/>
         </Tab>
-        <Tab  heading={ <TabHeading style={{backgroundColor:'#696969',borderColor:'#ffffff'}}><Icon name={'cog'} size={10} color={'#FFFFFF'} /><Text style={{color:'#ffffff'}}>Sell Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
+        <Tab  heading={ <TabHeading style={{backgroundColor:'#ffffff',borderColor:'#ffffff'}}><Icon name={'dollar'} size={10} color={'#000000'} /><Text style={{color:'#000000'}}> Sell Tickets</Text></TabHeading>} activeTabStyle={{borderBottomColor:'#ffffff'}}>
           <RecentSellTicketsScreen navigation={this.props.navigation}/>
         </Tab>
       </Tabs>
 
-      </Container>
+      </View>
     );
   }
 }

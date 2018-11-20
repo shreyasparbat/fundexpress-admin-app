@@ -1,26 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AllPawnTicketsScreen from './AllPawnTickets';
-import AllSellTicketsScreen from './AllSellTickets';
 import { Container, Header, Tab, Tabs, TabHeading} from 'native-base';
-import { createStackNavigator } from 'react-navigation';
 import LogOutButton from '../components/LogOutButton';
 
-export default class UserHistoryScreen extends React.Component {
-  // static navigationOptions = {
-  //   title: "User History",
-  //     headerStyle: {
-  //       backgroundColor: "#bf1e2d",
-  //     },
-  //     headerTintColor: "#ffffff",
-  //     headerTitleStyle: {
-  //       fontWeight: "bold",
-  //       color: "#ffffff"
-  //     },
-  // }
+export default class AdminFunctionsScreen extends React.Component {
+
   static navigationOptions = ({ navigation, screenProps }) => ({
-    title: "User History",
+    title: "Admin Functions",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
       backgroundColor: '#bf1e2d',
@@ -36,7 +23,7 @@ export default class UserHistoryScreen extends React.Component {
     },
   });
   render() {
-    console.log("User History Screen");
+    console.log("Admin Functions Screen");
     const currentUserID = this.props.navigation.getParam('currentUserID');
     console.log("My Tickets: " + currentUserID);
 
@@ -51,46 +38,31 @@ export default class UserHistoryScreen extends React.Component {
         <View style={{flex: 0.4, marginTop: 100, alignSelf: 'center'}}>
           <View style={{ flexDirection: 'row', }}>
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('AllPawnTickets', {currentUserID: currentUserID})}
+                onPress={() => this.props.navigation.navigate('UpdateInterestRate')}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >
                 <Text style={styles.textStyle}>
-                  Pawn Tickets
-                </Text>
-                <View style={{alignSelf: 'center'}}>
-                  <Icon name={'ticket'} size={50}
-                  color={'#bf1e2d'} />
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('AllSellTickets', {currentUserID: currentUserID})}
-                activeOpacity= {0.8}
-                style={styles.buttonStyle}
-              >
-                <Text style={styles.textStyle}>
-                  Sell Tickets
+                  Update Interest Rate
                 </Text>
                 <View style={{alignSelf: 'center'}}>
                   <Icon name={'dollar'} size={50}
                   color={'#bf1e2d'} />
                 </View>
-              </TouchableOpacity>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 7, alignSelf: 'center'}}>
+            </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('UserSettings', {currentUserID: currentUserID})}
+                onPress={() => this.props.navigation.navigate('OnboardNewAdmin')}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >
                 <Text style={styles.textStyle}>
-                  User Settings
+                  Onboard New Admin
                 </Text>
                 <View style={{alignSelf: 'center'}}>
-                  <Icon name={'cog'} size={50}
+                  <Icon name={'user'} size={50}
                   color={'#bf1e2d'} />
                 </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -101,7 +73,7 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: 'black',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     paddingTop: 10,
     paddingBottom: 10,

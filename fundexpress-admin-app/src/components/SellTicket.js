@@ -7,7 +7,7 @@ const styles = {
   buttonStyle: {
     margin: 5,
     height:35,
-    backgroundColor: '#C00000',
+    backgroundColor: '#bf1e2d',
     width:150,
     justifyContent: 'center'
   }
@@ -23,7 +23,7 @@ export default class SellTicket extends React.Component {
       item: props.data.item,
       ticketNumber: props.data._id,
       dateCreated: new Date(props.data.dateCreated),
-      value: props.data.value,
+      value: this.roundTo(props.data.value),
       approvalStatus: props.data.approved,
       frontUri:'',
       backUri:'',
@@ -76,11 +76,11 @@ export default class SellTicket extends React.Component {
       return parseFloat(Math.round(number * 100) / 100).toFixed(2);
   }
   renderTicketApprovalButton(){
-    if (!this.state.approvalStatus==true){
+    if (this.state.approvalStatus==false){
       return(
         <CardItem style={{justifyContent: 'center'}}>
           {/* Ticket Approval Button */}
-          <Button style={styles.buttonStyle} onPress={() => this.state.navigation.navigate('EditSellTicket', {currentUserID: this.state.currentUserID, sellTicketID: this.state.ticketNumber, frontUri: this.state.frontUri, backUri: this.state.backUri})}>
+          <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditSellTicket', {currentUserID: this.state.currentUserID, sellTicketID: this.state.ticketNumber, frontUri: this.state.frontUri, backUri: this.state.backUri })}>
             <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
           </Button>
         </CardItem>
@@ -90,11 +90,9 @@ export default class SellTicket extends React.Component {
   }
   render(){
     console.log("currentUserID" + this.state.currentUserID);
-    console.log("frontUri: " + this.state.frontUri);
-    console.log("backUri: " + this.state.backUri);
     return(
       <View>
-            <Card style={{flex: 0}}>
+            <Card style={{flex: 1}}>
               <CardItem>
               <Left>
               <Image
@@ -127,9 +125,7 @@ export default class SellTicket extends React.Component {
                     </View>
 
                     {/* //Buttons container */}
-                    <View style={{alignSelf: 'center'}}>
                     {this.renderTicketApprovalButton()}
-                    </View>
                   </Body>
 
               </CardItem>

@@ -24,6 +24,7 @@ export default class EditSellTicketScreen extends React.Component{
       sellTicketID: this.props.navigation.getParam('sellTicketID'),
       frontUri: this.props.navigation.getParam('frontUri'),
       backUri: this.props.navigation.getParam('backUri'),
+      nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
       item: {},
       pendingSellTicket:{},
       dateCreated: new Date() ,
@@ -184,18 +185,22 @@ getDateObject(date){
     if (this.props.navigation.getParam('itemState')!=null){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
-
-    this.props.navigation.navigate('SellTicketApproval',
-      {
-        editedTicketState: {
-          "sellTicketID":this.state.sellTicketID,
-          "item": this.state.item,
-          "dateCreated": this.state.dateCreated,
-          "value": this.state.value,
-          "approved": this.state.approved,
-        }
+    var objectToSend = {
+      currentUserID: this.state.currentUserID,
+      nameOfPreviousPage: this.state.nameOfPreviousPage,
+      editedTicketState: {
+        "sellTicketID":this.state.sellTicketID,
+        "item": this.state.item,
+        "dateCreated": this.state.dateCreated,
+        "value": this.state.value,
+        "approved": this.state.approved,
       }
-    );
+    };
+  //  if (this.state.nameOfPreviousPage=='TicketsMain'){
+      this.props.navigation.navigate('SellTicketApproval', objectToSend);
+    // } else {
+    //   this.props.navigation.navigate('SellTicketApprovalUser', objectToSend);
+    // }
   }
   reject(){
     console.log('reject method reached');
@@ -203,7 +208,11 @@ getDateObject(date){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
     console.log('SellTicketID: ' + this.state.sellTicketID);
-    this.props.navigation.navigate('SellTicketRejection', {sellTicketID: this.state.sellTicketID});
+    //if (this.state.nameOfPreviousPage=='TicketsMain'){
+      this.props.navigation.navigate('SellTicketRejection', {sellTicketID: this.state.sellTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
+    // } else {
+    //   this.props.navigation.navigate('SellTicketRejectionUser', {sellTicketID: this.state.sellTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
+    // }
   }
   render(){
 

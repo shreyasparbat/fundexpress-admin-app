@@ -249,6 +249,7 @@ const RootStack = createStackNavigator({
         "Admin Functions": {
           screen: createStackNavigator({
             AdminMain: {screen: AdminFunctionsScreen},
+            LogOut : {screen: LogOutButton},
             UpdateInterestRate: {screen: UpdateInterestRateScreen},
             OnboardNewAdmin: {screen: OnboardNewAdminScreen},
           }),
@@ -265,8 +266,20 @@ const RootStack = createStackNavigator({
         Tickets: {
           screen: createStackNavigator({
             TicketsMain: {screen: RecentTicketsScreen},
+            LogOut : {screen: LogOutButton},
             RecentPawnTickets: {screen: RecentPawnTicketsScreen},
             RecentSellTickets: {screen: RecentSellTicketsScreen},
+            SellTicket: {screen: SellTicket},
+            PawnTicket: {screen: PawnTicket},
+            EditPawnTicket:{screen: EditPawnTicketScreen},
+            EditPawnItem:{screen: EditPawnItemScreen},
+            SellTicketApproval: {screen: SellTicketApprovalScreen},
+            SellTicketRejection: {screen: SellTicketRejectionScreen},
+            EditSellTicket: {screen: EditSellTicketScreen},
+            EditSellItem:{screen: EditSellItemScreen},
+            PawnTicketApproval: {screen: PawnTicketApprovalScreen},
+            PawnTicketRejection: {screen: PawnTicketRejectionScreen},
+            ImageView:{screen: ImageView},
           }),
           navigationOptions: {
             initialRouteName: 'TicketsMain',
@@ -276,6 +289,7 @@ const RootStack = createStackNavigator({
             },
             swipeEnabled: false,
             gesturesEnabled: false,
+
           }
         },
         Users: {
@@ -326,10 +340,10 @@ const RootStack = createStackNavigator({
         style: {
           backgroundColor: '#bf1e2d',
         }
-      }
+      },
+
     }
-  ),
-  navigationOptions: {
+  ),navigationOptions: {
     headerStyle: {
       backgroundColor: '#bf1e2d',
     },
@@ -340,7 +354,18 @@ const RootStack = createStackNavigator({
     },
     header:null,
     gesturesEnabled: false,
+
+    // const routes = navigation.state.routes;
+    // if (routes && routes.length > 0) {
+    //     const route = routes[routes.length - 1];
+    //     if (route.routeName == 'approve or reject') {  // match by last routeName
+    //         return false;
+    //     }
+    // }
+    // return true;
   }
   }
 });
+
+
 export default RootStack;

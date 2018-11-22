@@ -33,6 +33,7 @@ export default class PawnTicket extends React.Component {
       outstandingInterest: this.roundTo(props.data.outstandingInterest),
       frontUri:'',
       backUri:'',
+      nameOfPreviousPage: props.nameOfPreviousPage,
       loading: false,
     }
   }
@@ -136,7 +137,15 @@ export default class PawnTicket extends React.Component {
       return(
         <CardItem style={{justifyContent: 'center'}}>
           {/* Ticket Approval Button */}
-          <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditPawnTicket', {currentUserID: this.state.currentUserID, pawnTicketID: this.state.ticketNumber, frontUri: this.state.frontUri, backUri: this.state.backUri })}>
+          <Button
+            style={styles.buttonStyle}
+            onPress={() => this.props.navigation.navigate('EditPawnTicket', {
+              currentUserID: this.state.currentUserID,
+              pawnTicketID: this.state.ticketNumber,
+              frontUri: this.state.frontUri,
+              backUri: this.state.backUri,
+              nameOfPreviousPage: this.state.nameOfPreviousPage,
+            })}>
             <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
           </Button>
         </CardItem>

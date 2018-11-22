@@ -39,8 +39,8 @@ export default class UpdateInterestRateScreen extends React.Component {
     this.setState({loading:true});
     this.retrieveData().then((auth) => {
       console.log("auth: " + auth)
-    fetch(url.url + 'adminViews/updateInterestRates/',{ //fetch from admin url
-      method: 'POST',
+    fetch(url.url + 'adminViews/getInterestRate/',{ //fetch from admin url
+      method: 'GET',
       headers: {
         //Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -64,8 +64,8 @@ export default class UpdateInterestRateScreen extends React.Component {
       })
       console.log("6. finished setting state")
       console.log(this.state.currentInterestRate.title)
-      console.log(this.state.currentInterestRate.currentFirstMonthRate)
-      console.log(this.state.currentInterestRate.currentNormalRate)
+      console.log(this.state.currentInterestRate.firstMonthRate)
+      console.log(this.state.currentInterestRate.normalRate)
       console.log(this.state.currentInterestRate.dateUpdated)
     })
     .catch((error) => {
@@ -152,6 +152,7 @@ export default class UpdateInterestRateScreen extends React.Component {
         <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
           <FormLabel>Current First Month Rate</FormLabel>
           <FormInput
+            name='firstMonthRate'
             onChangeText={firstMonthRate => this.setState({ firstMonthRate })}
             value={this.state.firstMonthRate.toString()}
           />
@@ -161,6 +162,7 @@ export default class UpdateInterestRateScreen extends React.Component {
         <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
           <FormLabel>Current Normal Rate</FormLabel>
           <FormInput
+            name='normalRate'
             onChangeText={currentNormalRate => this.setState({ currentNormalRate })}
             value={this.state.currentNormalRate.toString()}
           />

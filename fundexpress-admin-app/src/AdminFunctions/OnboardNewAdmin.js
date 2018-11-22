@@ -150,7 +150,7 @@ export default class OnboardNewAdminScreen extends React.Component {
         email: this.state.email,
         password: this.state.password,
         fullName: this.state.fullName,
-        tokens: [this.state.ptoken],
+        expoPushToken: this.state.ptoken
       }),
     })
     .then((response) => {
@@ -169,6 +169,7 @@ export default class OnboardNewAdminScreen extends React.Component {
         //store x-auth in the app cache
         this.storeData('newAuth', res.headers.get('x-auth'));
         this.storeData('ptoken', this.state.ptoken);
+        console.log(this.state.ptoken);
         // console.log("Success")
         // console.log(this.state.email + " logged in")
         this.logOut()

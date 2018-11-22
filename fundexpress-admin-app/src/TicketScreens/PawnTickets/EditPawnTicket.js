@@ -24,6 +24,7 @@ export default class EditPawnTicketScreen extends React.Component{
       pawnTicketID: this.props.navigation.getParam('pawnTicketID'),
       frontUri: this.props.navigation.getParam('frontUri'),
       backUri: this.props.navigation.getParam('backUri'),
+      nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
       item: {},
       pendingPawnTicket:{},
       dateCreated: new Date() ,
@@ -71,6 +72,8 @@ export default class EditPawnTicketScreen extends React.Component{
     console.log("expiryDate: " + this.state.expiryDate)
     console.log("gracePeriodEndDate: " + this.state.gracePeriodEndDate)
     console.log("11.set loading=false")
+
+    console.log("name of previous page:"+ this.state.nameOfPreviousPage);
     this.setState({loading: false});
 }
   getPendingPawnTicket(pendingPawnTickets){
@@ -191,9 +194,9 @@ getDateObject(date){
     if (this.props.navigation.getParam('itemState')!=null){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
-
-    this.props.navigation.navigate('PawnTicketApproval', {
+    var objectToSend = {
       currentUserID: this.state.currentUserID,
+      nameOfPreviousPage: this.state.nameOfPreviousPage,
       editedTicketState: {
         // "__v": this.state.__v,
         // "_id": this.state._id,
@@ -210,13 +213,22 @@ getDateObject(date){
         "outstandingPrincipal": this.state.outstandingPrincipal,
         "outstandingInterest": this.state.outstandingInterest
       }
-    });
+    };
+    //if (this.state.nameOfPreviousPage=='TicketsMain'){
+      this.props.navigation.navigate('PawnTicketApproval', objectToSend);
+    //}
+    //  this.props.navigation.navigate('PawnTicketApprovalUser', objectToSend);
   }
   reject(){
     console.log('reject method reached');
 
+
     console.log('pawnTicketID: ' + this.state.pawnTicketID);
-    this.props.navigation.navigate('PawnTicketRejection', {pawnTicketID: this.state.pawnTicketID});
+    //if (this.state.nameOfPreviousPage=='TicketsMain'){
+      this.props.navigation.navigate('PawnTicketRejection', {pawnTicketID: this.state.pawnTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
+    //}
+    //this.props.navigation.navigate('PawnTicketRejectionUser', {pawnTicketID: this.state.pawnTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
+
   }
 
   render(){

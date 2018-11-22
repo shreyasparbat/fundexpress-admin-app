@@ -2,10 +2,12 @@ import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import url from '../../constants/url';
+import { Icon } from 'native-base';
 
 export default class PawnTicketRejectionScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Rejection',
+    headerLeft: null,
     headerStyle: {
       backgroundColor: '#bf1e2d',
     },
@@ -20,6 +22,7 @@ export default class PawnTicketRejectionScreen extends React.Component{
     console.log("1. construction");
     this.state={
       pawnTicketID: this.props.navigation.getParam('pawnTicketID'),
+      nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
       loading: false,
       successMessage: ''
     }
@@ -67,40 +70,62 @@ export default class PawnTicketRejectionScreen extends React.Component{
       throw error
     }
   }
-
   renderImage(){
-    if(this.state.stateOfTicket.approved){
+    if(this.state.successMessage.msg!=null){
       return (
-        <Image
-          source='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Tick_Mark_Dark-512.png'
-          style={{height:100, width:100}}
-        />
+        <View>
+          <Icon
+            style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#228B22'}}
+            name='ios-checkmark-circle'
+          />
+          <Text style={{fontSize:20}}>{this.state.successMessage.msg}</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Icon
+            style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#bf1e2d'}}
+            name='ios-close-circle'
+          />
+          <Text style={{fontSize:20}}>{this.state.successMessage.error}</Text>
+        </View>
       );
     }
-    return (
-      <Image
-        source='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Dark-512.png'
-        style={{height:100, width:100}}
-      />
-    );
   }
-
+  renderBackButton(){
+    if(this.state.nameOfPreviousPage=='UserHistory'){
+      return(
+        <View style={{marginTop:10}}>
+          <Button
+            backgroundColor='#bf1e2d'
+            color='#FFFFFF'
+            title='Back to User History'
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+          />
+        </View>
+      );
+    } else {
+      return(
+        <View style={{marginTop:10}}>
+          <Button
+            backgroundColor='#bf1e2d'
+            color='#FFFFFF'
+            title='Back to Recent Tickets'
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+          />
+        </View>
+      );
+    }
+  }
   render(){
     if (this.state.loading){
       return <ActivityIndicator/>;
     }
     return(
       <View style={{backgroundColor:'white', flex:1, alignItems:'center', justifyContent:'center'}}>
-        <Text style={{fontSize:20}}>{this.state.successMessage.msg}</Text>
-        <Text style={{fontSize:20}}>{this.state.successMessage.error}</Text>
-        <View style={{marginTop:10}}>
-          <Button
-            backgroundColor='#bf1e2d'
-            color='#FFFFFF'
-            title='Back to User History'
-            onPress={()=> this.props.navigation.navigate('UserHistory')}
-          />
-        </View>
+        {this.renderImage()}
+        {this.renderBackButton()}
       </View>
     );
   }

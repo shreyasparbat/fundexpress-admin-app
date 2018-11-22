@@ -27,6 +27,7 @@ export default class SellTicket extends React.Component {
       approvalStatus: props.data.approved,
       frontUri:'',
       backUri:'',
+      nameOfPreviousPage: props.nameOfPreviousPage,
     }
   }
   getFrontURI(ticketID){
@@ -80,7 +81,15 @@ export default class SellTicket extends React.Component {
       return(
         <CardItem style={{justifyContent: 'center'}}>
           {/* Ticket Approval Button */}
-          <Button style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('EditSellTicket', {currentUserID: this.state.currentUserID, sellTicketID: this.state.ticketNumber, frontUri: this.state.frontUri, backUri: this.state.backUri })}>
+          <Button
+            style={styles.buttonStyle} 
+            onPress={() => this.props.navigation.navigate('EditSellTicket', {
+              currentUserID: this.state.currentUserID,
+              sellTicketID: this.state.ticketNumber,
+              frontUri: this.state.frontUri,
+              backUri: this.state.backUri,
+              nameOfPreviousPage: this.state.nameOfPreviousPage,
+            })}>
             <Text style={{fontSize: 16, color: '#ffffff', }}>Ticket Approval</Text>
           </Button>
         </CardItem>

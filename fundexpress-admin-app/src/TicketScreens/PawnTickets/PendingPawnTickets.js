@@ -94,6 +94,7 @@ class PendingPawnTickets extends React.Component {
       navigation={this.state.navigation}
       frontUri={this.getFrontURI(ticket._id)}
       backUri={this.getBackURI(ticket._id)}
+      nameOfPreviousPage='UserHistory'
     />
     );
   }

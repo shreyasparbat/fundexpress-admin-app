@@ -60,7 +60,9 @@ export default class RecentSellTicketsScreen extends React.Component {
       console.log("/tickets Success");
       this.setState({
         data: response.sellTicketsPendingApproval.sort(function(a,b){
-          return new Date(b.date) - new Date(a.date);
+          a = new Date(a.dateCreated);
+          b = new Date(b.dateCreated);
+          return a>b ? -1 : a<b ? 1 : 0;
         }),
         loading:false
       })
@@ -85,14 +87,7 @@ export default class RecentSellTicketsScreen extends React.Component {
     var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.jpg';
     return uri;
   }
-  sortByDateCreated(data){
-    data.sort(function(a, b) {
-        a = new Date(a.dateCreated);
-        b = new Date(b.dateCreated);
-        return a>b ? -1 : a<b ? 1 : 0;
-    });
-    return data;
-  }
+
   renderTickets(){
     return this.state.data.map(ticket =>
     <SellTicket
@@ -102,6 +97,7 @@ export default class RecentSellTicketsScreen extends React.Component {
       currentUserID={ticket.userID}
       frontUri={this.getFrontURI(ticket._id)}
       backUri={this.getBackURI(ticket._id)}
+      nameOfPreviousPage='TicketsMain'
     />
     );
   }

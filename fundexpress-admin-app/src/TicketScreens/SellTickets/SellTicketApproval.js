@@ -1,12 +1,14 @@
 import React from 'react';
 import { AsyncStorage, StyleSheet, Text, View, ImageBackground, Image, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
+import { Icon } from 'native-base';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import url from '../../constants/url';
 
 export default class SellTicketApprovalScreen extends React.Component{
   static navigationOptions = {
     title: 'Ticket Approval',
+    headerLeft:null,
     headerStyle: {
       backgroundColor: '#bf1e2d',
     },
@@ -22,6 +24,8 @@ export default class SellTicketApprovalScreen extends React.Component{
       editedTicketState:this.props.navigation.getParam('editedTicketState'),
       successMessage: 'Sell Ticket Approval Failed',
       loading: false,
+      currentUserID: this.props.navigation.getParam('currentUserID'),
+      nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
     }
     console.log(this.state.editedTicketState);
     console.log("1. this state is initialised");
@@ -102,20 +106,46 @@ export default class SellTicketApprovalScreen extends React.Component{
   }
 
   renderImage(){
-    if(this.state.approved){
+    if(this.state.successMessage=='Sell Ticket Successfully Approved'){
       return (
-        <Image
-          source={{uri:'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Tick_Mark_Dark-512.png'}}
-          style={{height:100, width:100}}
+        <Icon
+          style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#228B22'}}
+          name='ios-checkmark-circle'
+        />
+      );
+    } else {
+      return (
+        <Icon
+          style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#bf1e2d'}}
+          name='ios-close-circle'
         />
       );
     }
-    return (
-      <Image
-        source='https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Close_Icon_Dark-512.png'
-        style={{height:100, width:100}}
-      />
-    );
+  }
+  renderBackButton(){
+    if(this.state.nameOfPreviousPage=='UserHistory'){
+      return(
+        <View style={{marginTop:10}}>
+          <Button
+            backgroundColor='#bf1e2d'
+            color='#FFFFFF'
+            title='Back to User History'
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+          />
+        </View>
+      );
+    } else {
+      return(
+        <View style={{marginTop:10}}>
+          <Button
+            backgroundColor='#bf1e2d'
+            color='#FFFFFF'
+            title='Back to Recent Tickets'
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+          />
+        </View>
+      );
+    }
   }
 
   render(){
@@ -124,16 +154,9 @@ export default class SellTicketApprovalScreen extends React.Component{
     }
     return(
       <View style={{backgroundColor:'white', flex:1, alignItems:'center', justifyContent:'center'}}>
+        {this.renderImage()}
         <Text style={{fontSize:20}}>{this.state.successMessage}</Text>
-
-        <View style={{marginTop:10}}>
-          <Button
-            backgroundColor='#bf1e2d'
-            color='#FFFFFF'
-            title='Back to User History'
-            onPress={()=> this.props.navigation.navigate('UserHistory')}
-          />
-        </View>
+        {this.renderBackButton()}
       </View>
     );
   }

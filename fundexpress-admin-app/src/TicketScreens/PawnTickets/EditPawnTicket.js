@@ -39,21 +39,21 @@ export default class EditPawnTicketScreen extends React.Component{
       outstandingInterest: 0,
       loading:false,
     }
-    console.log("1. this state is initialised");
+    //console.log("1. this state is initialised");
   }
 
   componentWillMount(){
-    console.log("2. componentWillMount")
-    console.log("edit ticket pawnTicketID: " + this.state.pawnTicketID);
-    console.log("edit ticket currentUserID: " + this.state.currentUserID);
+    // console.log("2. componentWillMount")
+    // console.log("edit ticket pawnTicketID: " + this.state.pawnTicketID);
+    // console.log("edit ticket currentUserID: " + this.state.currentUserID);
     this.retrieveTickets();
 
 
   }
   setStateOfPendingPawnTicket(){
-    console.log("8. start of setStateOfPendingPawnTicket")
+    //console.log("8. start of setStateOfPendingPawnTicket")
     var pendingPawnTicket =  this.state.pendingPawnTicket;
-    console.log("9. retrieved pendingPawnTicket: " + pendingPawnTicket);
+    // console.log("9. retrieved pendingPawnTicket: " + pendingPawnTicket);
     this.setState({
       item: pendingPawnTicket.item,
       dateCreated:  pendingPawnTicket.dateCreated,
@@ -67,34 +67,29 @@ export default class EditPawnTicketScreen extends React.Component{
       outstandingPrincipal:  pendingPawnTicket.outstandingPrincipal,
       outstandingInterest:  pendingPawnTicket.outstandingInterest,
     })
-    console.log("10.set state of pendingPawnTicket complete")
-    console.log("dateCreated: " + this.state.dateCreated)
-    console.log("expiryDate: " + this.state.expiryDate)
-    console.log("gracePeriodEndDate: " + this.state.gracePeriodEndDate)
-    console.log("11.set loading=false")
-
-    console.log("name of previous page:"+ this.state.nameOfPreviousPage);
+    // console.log("10.set state of pendingPawnTicket complete")
+    // console.log("11.set loading=false")
     this.setState({loading: false});
 }
   getPendingPawnTicket(pendingPawnTickets){
-    console.log("6a. pendingPawnTickets in getPendingPawnTicket method: " + pendingPawnTickets)
+    //console.log("6a. pendingPawnTickets in getPendingPawnTicket method: " + pendingPawnTickets)
     for (i=0; i<pendingPawnTickets.length; i++){
       var pendingPawnTicket = pendingPawnTickets[i];
-      console.log('pendingPawnTicket: ' + pendingPawnTicket._id);
       if (pendingPawnTicket._id===this.state.pawnTicketID ){
-        console.log("6b. return this pawn ticket: " + pendingPawnTicket._id);
+        //console.log("6b. return this pawn ticket: " + pendingPawnTicket._id);
 
         return pendingPawnTicket;
 
       }
     }
-    console.log("6c. returning an empty pawnTicket");
+  //  console.log("6c. returning an empty pawnTicket");
+    this.props.navigation.navigate(this.state.nameOfPreviousPage)
     return {};
   }
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
-      console.log('2a. auth retrieved: ' + value)
+    //  console.log('2a. auth retrieved: ' + value)
       return value;
     } catch (error) {
       console.log(error)
@@ -110,22 +105,22 @@ export default class EditPawnTicketScreen extends React.Component{
 }
 
 retrieveTickets(){
-  console.log("3. start of retrieveTickets in pendingPawnTickets and set loading=true")
+  //console.log("3. start of retrieveTickets in pendingPawnTickets and set loading=true")
   this.setState({loading: true});
   //normal client retrieve tickets
 
   this.retrieveData().then((auth) =>{
-    console.log({ //fetch from admin url
-      method: 'POST',
-      headers: {
-        //Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-auth': auth
-      },
-      body: JSON.stringify({
-        "userID": this.state.currentUserID,
-      }) //not in client side
-    });
+    // console.log({ //fetch from admin url
+    //   method: 'POST',
+    //   headers: {
+    //     //Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     'x-auth': auth
+    //   },
+    //   body: JSON.stringify({
+    //     "userID": this.state.currentUserID,
+    //   }) //not in client side
+    // });
     return auth
   })
   .then((auth) => {
@@ -141,15 +136,15 @@ retrieveTickets(){
     }), //not in client side
   })
   .then((response) => {
-    console.log("4. response.ok: " + response.ok);
-    console.log()
+    //console.log("4. response.ok: " + response.ok);
+
     return response.json()
   })
   .then((response) => {
-    console.log("5. success: set PendingPawnTicket");
+    //console.log("5. success: set PendingPawnTicket");
     this.setState({pendingPawnTicket:this.getPendingPawnTicket(response.pawnTicketsPendingApproval)});
-    console.log("6. ")
-    console.log("7. calling setStateOfPendingPawnTicket");
+    // console.log("6. ")
+    // console.log("7. calling setStateOfPendingPawnTicket");
     this.setStateOfPendingPawnTicket();
 
   })
@@ -190,7 +185,7 @@ getDateObject(date){
 }
   //approve the tickets
   approve(){
-    console.log('approved method reached');
+
     if (this.props.navigation.getParam('itemState')!=null){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
@@ -214,31 +209,21 @@ getDateObject(date){
         "outstandingInterest": this.state.outstandingInterest
       }
     };
-    //if (this.state.nameOfPreviousPage=='TicketsMain'){
       this.props.navigation.navigate('PawnTicketApproval', objectToSend);
-    //}
-    //  this.props.navigation.navigate('PawnTicketApprovalUser', objectToSend);
   }
   reject(){
-    console.log('reject method reached');
 
-
-    console.log('pawnTicketID: ' + this.state.pawnTicketID);
-    //if (this.state.nameOfPreviousPage=='TicketsMain'){
       this.props.navigation.navigate('PawnTicketRejection', {pawnTicketID: this.state.pawnTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
-    //}
-    //this.props.navigation.navigate('PawnTicketRejectionUser', {pawnTicketID: this.state.pawnTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
 
   }
 
   render(){
-
+    if (this.state.indicativeTotalInterestPayable.toString()==null){
+      this.props.navigation.navigate(this.state.nameOfPreviousPage);
+    }
     if(this.state.loading){
       return <ActivityIndicator/>;
     }
-    // if (this.props.navigation.getParam('itemState')!=null && this.state.item!=this.props.navigation.getParam('itemState')){
-    //   this.setState({item: this.props.navigation.getParam('itemState')});
-    // }
     return(
       <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
         extraScrollHeight = {150}
@@ -277,7 +262,7 @@ getDateObject(date){
                   modalTransparent={false}
                   animationType={"fade"}
                   androidMode={"default"}
-                  placeHolderText="Select Date Created"
+                  placeHolderText={this.state.dateCreated}
                   textStyle={{ color: "black" }}
                   placeHolderTextStyle={{ color: "#c7c7cd" }}
                   onDateChange={dateCreated => this.setState({ dateCreated })}
@@ -297,7 +282,7 @@ getDateObject(date){
                   modalTransparent={false}
                   animationType={"fade"}
                   androidMode={"default"}
-                  placeHolderText="Select Expiry Date"
+                  placeHolderText={this.state.expiryDate}
                   textStyle={{ color: "black" }}
                   placeHolderTextStyle={{ color: "#c7c7cd" }}
                   onDateChange={expiryDate => this.setState({ expiryDate })}
@@ -318,7 +303,7 @@ getDateObject(date){
                   modalTransparent={false}
                   animationType={"fade"}
                   androidMode={"default"}
-                  placeHolderText="Select Grace Period End Date"
+                  placeHolderText={this.state.gracePeriodEndDate}
                   textStyle={{ color: "black" }}
                   placeHolderTextStyle={{ color: "#c7c7cd" }}
                   onDateChange={gracePeriodEndDate => this.setState({ gracePeriodEndDate })}

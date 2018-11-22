@@ -14,7 +14,7 @@ export default class LogOutButton extends React.Component{
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("token retrieved " + value);
+
       return value;
     } catch (error){
       throw error

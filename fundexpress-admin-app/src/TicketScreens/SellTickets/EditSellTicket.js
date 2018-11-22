@@ -32,21 +32,16 @@ export default class EditSellTicketScreen extends React.Component{
       approved: false,
       loading:false,
     }
-    console.log("1. this state is initialised");
   }
 
   componentWillMount(){
-    console.log("2. componentWillMount")
-    console.log("edit ticket SellTicketID: " + this.state.sellTicketID);
-    console.log("edit ticket currentUserID: " + this.state.currentUserID);
+
     this.retrieveTickets();
 
 
   }
   setStateOfPendingSellTicket(){
-    console.log("8. start of setStateOfPendingSellTicket")
     var pendingSellTicket =  this.state.pendingSellTicket;
-    console.log("9. retrieved pendingSellTicket: " + pendingSellTicket);
     this.setState({
       item: pendingSellTicket.item,
       dateCreated:  pendingSellTicket.dateCreated,
@@ -60,32 +55,28 @@ export default class EditSellTicketScreen extends React.Component{
       outstandingPrincipal:  pendingSellTicket.outstandingPrincipal,
       outstandingInterest:  pendingSellTicket.outstandingInterest,
     })
-    console.log("10.set state of pendingSellTicket complete")
-    console.log("dateCreated: " + this.state.dateCreated)
-    console.log("expiryDate: " + this.state.expiryDate)
-    console.log("gracePeriodEndDate: " + this.state.gracePeriodEndDate)
-    console.log("11.set loading=false")
     this.setState({loading: false});
 }
   getPendingSellTicket(pendingSellTickets){
-    console.log("6a. pendingSellTickets in getPendingSellTicket method: " + pendingSellTickets)
+    // console.log("6a. pendingSellTickets in getPendingSellTicket method: " + pendingSellTickets)
     for (i=0; i<pendingSellTickets.length; i++){
       var pendingSellTicket = pendingSellTickets[i];
-      console.log('pendingSellTicket: ' + pendingSellTicket._id);
+      // console.log('pendingSellTicket: ' + pendingSellTicket._id);
       if (pendingSellTicket._id===this.state.sellTicketID ){
-        console.log("6b. return this Sell ticket: " + pendingSellTicket._id);
+        // console.log("6b. return this Sell ticket: " + pendingSellTicket._id);
 
         return pendingSellTicket;
 
       }
     }
-    console.log("6c. returning an empty SellTicket");
+    // console.log("6c. returning an empty SellTicket");
+    this.props.navigation.navigate(this.state.nameOfPreviousPage)
     return {};
   }
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
-      console.log('2a. auth retrieved: ' + value)
+      // console.log('2a. auth retrieved: ' + value)
       return value;
     } catch (error) {
       console.log(error)
@@ -101,22 +92,22 @@ export default class EditSellTicketScreen extends React.Component{
 }
 
 retrieveTickets(){
-  console.log("3. start of retrieveTickets in pendingSellTickets and set loading=true")
+
   this.setState({loading: true});
   //normal client retrieve tickets
 
   this.retrieveData().then((auth) =>{
-    console.log({ //fetch from admin url
-      method: 'POST',
-      headers: {
-        //Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-auth': auth
-      },
-      body: JSON.stringify({
-        "userID": this.state.currentUserID,
-      }) //not in client side
-    });
+    // console.log({ //fetch from admin url
+    //   method: 'POST',
+    //   headers: {
+    //     //Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     'x-auth': auth
+    //   },
+    //   body: JSON.stringify({
+    //     "userID": this.state.currentUserID,
+    //   }) //not in client side
+    // });
     return auth
   })
   .then((auth) => {
@@ -133,14 +124,10 @@ retrieveTickets(){
     }), //not in client side
   })
   .then((response) => {
-    console.log("4. response.ok: " + response.ok);
     return response.json()
   })
   .then((response) => {
-    console.log("5. success: set PendingSellTicket");
     this.setState({pendingSellTicket:this.getPendingSellTicket(response.sellTicketPendingApproval)});
-    console.log("6. ")
-    console.log("7. calling setStateOfPendingSellTicket");
     this.setStateOfPendingSellTicket();
 
   })
@@ -152,17 +139,17 @@ retrieveTickets(){
 }
 getDateObject(date){
   if(Platform.OS==="ios"){
-     console.log("date: " + date);
+     //console.log("date: " + date);
     var currentDateString = date.toLocaleDateString("en-US", { day: "numeric", month: "numeric", year:"numeric" })
-     console.log("currentDateString: " + currentDateString)
+     //console.log("currentDateString: " + currentDateString)
     var arrayOfDateParts = currentDateString.split("/");
-     console.log("arrayOfDateParts: " + arrayOfDateParts)
+     //console.log("arrayOfDateParts: " + arrayOfDateParts)
     var month = arrayOfDateParts[0]
-     console.log('month: ' + month)
+     //console.log('month: ' + month)
     var day = arrayOfDateParts[1].substring(0, arrayOfDateParts[1].indexOf(","))
-     console.log('day: ' + day)
+     //console.log('day: ' + day)
     var year = arrayOfDateParts[2]
-     console.log('year: ' + year)
+     //console.log('year: ' + year)
     return new Date(year, month, day);
   }else{
     // console.log("date: " + date);
@@ -181,7 +168,6 @@ getDateObject(date){
 }
   //approve the tickets
   approve(){
-    console.log('approved method reached');
     if (this.props.navigation.getParam('itemState')!=null){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
@@ -196,23 +182,15 @@ getDateObject(date){
         "approved": this.state.approved,
       }
     };
-  //  if (this.state.nameOfPreviousPage=='TicketsMain'){
       this.props.navigation.navigate('SellTicketApproval', objectToSend);
-    // } else {
-    //   this.props.navigation.navigate('SellTicketApprovalUser', objectToSend);
-    // }
+
   }
   reject(){
-    console.log('reject method reached');
     if (this.props.navigation.getParam('itemState')!=null){
       this.setState({item: this.props.navigation.getParam('itemState')});
     }
-    console.log('SellTicketID: ' + this.state.sellTicketID);
-    //if (this.state.nameOfPreviousPage=='TicketsMain'){
       this.props.navigation.navigate('SellTicketRejection', {sellTicketID: this.state.sellTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
-    // } else {
-    //   this.props.navigation.navigate('SellTicketRejectionUser', {sellTicketID: this.state.sellTicketID, nameOfPreviousPage: this.state.nameOfPreviousPage});
-    // }
+
   }
   render(){
 
@@ -220,6 +198,9 @@ getDateObject(date){
       return <ActivityIndicator/>;
     }
     const ticket = this.state;
+    if (this.state.dateCreated==null){
+      this.props.navigation.navigate(this.state.nameOfPreviousPage);
+    }
     return(
       <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
         extraScrollHeight = {150}
@@ -254,7 +235,7 @@ getDateObject(date){
                   modalTransparent={false}
                   animationType={"fade"}
                   androidMode={"default"}
-                  placeHolderText="Select Date Created"
+                  placeHolderText={this.state.dateCreated}
                   textStyle={{ color: "black" }}
                   placeHolderTextStyle={{ color: "#c7c7cd" }}
                   onDateChange={dateCreated => this.setState({ dateCreated })}

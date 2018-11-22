@@ -27,27 +27,11 @@ export default class PawnTicketApprovalScreen extends React.Component{
       currentUserID: this.props.navigation.getParam('currentUserID'),
       nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
     }
-    console.log(this.state.editedTicketState);
-    console.log("1. this state is initialised");
   }
 
   componentWillMount(){
     this.setState({loading: true});
-    console.log('2. componentWillMount and set loading');
-    console.log("3. the body is {" +
-      "pawnTicketID :" + this.state.editedTicketState.pawnTicketID+"\r\n" +
-      "item"+ this.state.editedTicketState.item+"\r\n" +
-      "dateCreated"+ this.state.editedTicketState.dateCreated+"\r\n" +
-      "expiryDate"+ this.state.editedTicketState.expiryDate+"\r\n" +
-      "gracePeriodEndDate"+ this.state.editedTicketState.gracePeriodEndDate+"\r\n" +
-      "indicativeTotalInterestPayable"+ this.state.editedTicketState.indicativeTotalInterestPayable+"\r\n" +
-      "value"+ this.state.editedTicketState.value+"\r\n" +
-      "approved"+ this.state.editedTicketState.approved+"\r\n" +
-      "closed"+ this.state.editedTicketState.closed+"\r\n" +
-      "expired"+ this.state.editedTicketState.expired+"\r\n" +
-      "outstandingPrincipal"+ this.state.editedTicketState.outstandingPrincipal+"\r\n" +
-      "outstandingInterest"+ this.state.editedTicketState.outstandingInterest+ "\r\n" + "}"
-    );
+
     //continue
 
     const pendingPawnTicket = this.props.navigation.getParam('editedTicketState');
@@ -78,12 +62,14 @@ export default class PawnTicketApprovalScreen extends React.Component{
       )
     })
       .then((response) => {
-        console.log("response.ok: " + response.ok)
         return response.ok
       })
       .then((response) => {
-        console.log(response)
-        if(response==true){
+        if(response.error!=null){
+          this.setState({
+            successMessage: response.error
+          })
+        } else if (response==true){
           this.setState({
             successMessage: 'Pawn Ticket Successfully Approved',
           })
@@ -91,7 +77,6 @@ export default class PawnTicketApprovalScreen extends React.Component{
         this.setState({
           loading: false,
         })
-        console.log(this.state)
       })
       .catch((errorResponse) => {
         console.log('failed to get items');
@@ -105,7 +90,6 @@ export default class PawnTicketApprovalScreen extends React.Component{
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
       return value;
     } catch (error){
       throw error
@@ -113,7 +97,7 @@ export default class PawnTicketApprovalScreen extends React.Component{
   }
 
   renderImage(){
-    if(this.state.successMessgae=='Pawn Ticket Successfully Approved'){
+    if(this.state.successMessage=='Pawn Ticket Successfully Approved'){
       return (
         <Icon
           style={{ padding: 5, alignSelf: 'center', fontSize: 40, color: '#228B22'}}
@@ -148,7 +132,7 @@ export default class PawnTicketApprovalScreen extends React.Component{
             backgroundColor='#bf1e2d'
             color='#FFFFFF'
             title='Back to Recent Tickets'
-            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID, refresh:Math.random()})}
           />
         </View>
       );

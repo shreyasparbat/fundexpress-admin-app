@@ -9,7 +9,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default class UpdateInterestRateScreen extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
-    title: "User Settings",
+    title: "Update Interest Rate",
     headerRight: <LogOutButton navigation={navigation}/>,
     headerStyle: {
       backgroundColor: '#bf1e2d',
@@ -22,11 +22,13 @@ export default class UpdateInterestRateScreen extends React.Component {
   });
   constructor(props){
     super(props)
-    console.log("Update Interest Rate Screen");
+
     this.state={
         title:'',
         firstMonthRate:0,
         normalRate:0,
+        currentFirstMonthRate:0,
+        currentNormalRate:0,
         dateUpdated:'',
         loading:false,
         error:'',
@@ -34,11 +36,11 @@ export default class UpdateInterestRateScreen extends React.Component {
     }
   }
   componentWillMount(){
-    console.log("1. call retrieve data");
+
 
     this.setState({loading:true});
     this.retrieveData().then((auth) => {
-      console.log("auth: " + auth)
+
     fetch(url.url + 'adminViews/getInterestRate/',{ //fetch from admin url
       method: 'GET',
       headers: {
@@ -49,27 +51,24 @@ export default class UpdateInterestRateScreen extends React.Component {
     })
     .then((response) => {
       console.log("3. response.ok: " + response.ok);
-      console.log("4. response: " + response)
+
      return response.json()
       // return response
     })
     .then((response) => {
-      console.log("5. set state");
+
       this.setState({
-        title: response.title,
-        firstMonthRate: response.currentFirstMonthRate,
-        normalRate: response.currentNormalRate,
-        dateUpdated: response.dateUpdated,
+        firstMonthRate: response[0].firstMonthRate,
+        normalRate: response[0].normalRate,
+        dateUpdated: response[0].dateUpdated,
+        currentFirstMonthRate:response[0].firstMonthRate,
+        currentNormalRate:response[0].normalRate,
         loading:false
       })
-      console.log("6. finished setting state")
-      console.log(this.state.currentInterestRate.title)
-      console.log(this.state.currentInterestRate.firstMonthRate)
-      console.log(this.state.currentInterestRate.normalRate)
-      console.log(this.state.currentInterestRate.dateUpdated)
+
     })
     .catch((error) => {
-      console.log("error with adminViews/updateInterestRates")
+      console.log("error with adminViews/getInterestRate")
       console.log(error)
     })
   });
@@ -80,13 +79,14 @@ export default class UpdateInterestRateScreen extends React.Component {
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
-      console.log("2. value")
+
       return value;
     } catch (error) {
       console.log(error)
     }
   }
   submit() {
+
 
     this.retrieveData().then((token) => {
       fetch(url.url + 'adminViews/updateInterestRate',{
@@ -104,6 +104,8 @@ export default class UpdateInterestRateScreen extends React.Component {
         console.log("4. response.ok: " + response.ok)
         if(response.ok){
           this.setState({
+            firstMonthRate: response.firstMonthRate,
+            normalRate: response.normalRate,
             error: 'Interest Rate successfully updated',
             showAlert:true
           })
@@ -137,15 +139,12 @@ export default class UpdateInterestRateScreen extends React.Component {
       return <ActivityIndicator/>;
     }
     return(
-      <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
-        extraScrollHeight = {150}
-        keyboardOpeningTime = {10}
-      >
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
         <View style={{padding:5, alignItems:'center'}}>
           <Text style={{fontWeight:'bold', fontSize:20}}>{this.state.title}</Text>
           <Text style={{fontSize:14, paddingBottom: 5}}>Last Updated: {this.state.dateUpdated}</Text>
-          <Text style={{ fontSize:14}}>Current First Month Rate: {this.state.firstMonthRate}</Text>
-          <Text style={{fontSize:14}}>Current Normal Rate: {this.state.normalRate}</Text>
+          <Text style={{ fontSize:14}}>Current First Month Rate: {this.state.currentFirstMonthRate}</Text>
+          <Text style={{fontSize:14}}>Current Normal Rate: {this.state.currentNormalRate}</Text>
 
         </View>
         {/* initialLtvPercentage */}
@@ -163,8 +162,8 @@ export default class UpdateInterestRateScreen extends React.Component {
           <FormLabel>Current Normal Rate</FormLabel>
           <FormInput
             name='normalRate'
-            onChangeText={currentNormalRate => this.setState({ currentNormalRate })}
-            value={this.state.currentNormalRate.toString()}
+            onChangeText={normalRate => this.setState({ normalRate })}
+            value={this.state.normalRate.toString()}
           />
         </View>
 
@@ -180,7 +179,7 @@ export default class UpdateInterestRateScreen extends React.Component {
         <AwesomeAlert
             style={{modalContainer:{flex:5}}}
             show= {this.state.showAlert}
-            title="User Settings"
+            title="Interest Rate Update Status"
             message={this.state.error}
             closeOnTouchOutside={true}
             closeOnHardwareBackPress={false}
@@ -194,7 +193,7 @@ export default class UpdateInterestRateScreen extends React.Component {
             }}
         />
 
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }

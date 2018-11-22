@@ -82,9 +82,9 @@ export default class EditPawnItemScreen extends React.Component{
 
   }
   render(){
-    // if(this.state.loading){
-    //   return <ActivityIndicator/>
-    // }
+    if (this.state.pendingPawnTicket=={}){
+      this.props.navigation.navigate(this.state.nameOfPreviousPage);
+    }
     return(
       <KeyboardAwareScrollView contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
         extraScrollHeight = {150}
@@ -140,13 +140,13 @@ export default class EditPawnItemScreen extends React.Component{
           <FormLabel>Date Of Purchase</FormLabel>
           <DatePicker
             name='dateOfPurchase'
-            defaultDate={new Date(this.state.dateOfPurchase)}
+            defaultDate={new Date(this.state.gracePeriodEndDate)}
             style={{marginLeft:15}}
             locale={"SGP"}
             modalTransparent={false}
             animationType={"fade"}
             androidMode={"default"}
-            placeHolderText="Select Date Of Purchase"
+            placeHolderText={this.state.gracePeriodEndDate}
             textStyle={{ color: "black" }}
             placeHolderTextStyle={{ color: "#c7c7cd" }}
             onDateChange={dateOfPurchase => this.setState({ dateOfPurchase })}

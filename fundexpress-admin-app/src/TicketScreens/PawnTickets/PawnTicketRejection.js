@@ -19,18 +19,14 @@ export default class PawnTicketRejectionScreen extends React.Component{
   };
   constructor(props){
     super(props)
-    console.log("1. construction");
     this.state={
       pawnTicketID: this.props.navigation.getParam('pawnTicketID'),
       nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
       loading: false,
       successMessage: ''
     }
-    console.log("2. this state is initialised");
   }
   componentWillMount(){
-    console.log("3. set the state method");
-    console.log("pawnTicketID is :"+this.state.pawnTicketID)
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
@@ -51,7 +47,6 @@ export default class PawnTicketRejectionScreen extends React.Component{
           loading: false,
           successMessage: response,
         })
-        console.log(this.state)
       })
       .catch((errorResponse) => {
         console.log('failed to get items');
@@ -64,7 +59,6 @@ export default class PawnTicketRejectionScreen extends React.Component{
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
       return value;
     } catch (error){
       throw error
@@ -78,7 +72,8 @@ export default class PawnTicketRejectionScreen extends React.Component{
             style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#228B22'}}
             name='ios-checkmark-circle'
           />
-          <Text style={{fontSize:20}}>{this.state.successMessage.msg}</Text>
+          <Text style={{fontSize:20,  textAlign:'center', padding:10}}>Pawn Ticket Successfully Rejected</Text>
+          <Text style={{fontSize:20,  textAlign:'center', paddingBottom:10}}>(Deleted from Database)</Text>
         </View>
       );
     } else {
@@ -112,7 +107,7 @@ export default class PawnTicketRejectionScreen extends React.Component{
             backgroundColor='#bf1e2d'
             color='#FFFFFF'
             title='Back to Recent Tickets'
-            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID})}
+            onPress={()=> this.props.navigation.navigate(this.state.nameOfPreviousPage, {currentUserID: this.state.currentUserID, refresh: Math.random()})}
           />
         </View>
       );

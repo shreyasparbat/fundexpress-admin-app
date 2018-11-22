@@ -19,18 +19,14 @@ export default class SellTicketRejectionScreen extends React.Component{
   };
   constructor(props){
     super(props)
-    console.log("1. construction");
     this.state={
       sellTicketID: this.props.navigation.getParam('sellTicketID'),
       nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
       loading: false,
       successMessage: ''
     }
-    console.log("2. this state is initialised");
   }
   componentWillMount(){
-    console.log("3. set the state method");
-    console.log("sellTicketID is :"+this.state.sellTicketID)
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
@@ -46,12 +42,10 @@ export default class SellTicketRejectionScreen extends React.Component{
         return response.json()
       })
       .then((response) => {
-        console.log(response)
         this.setState({
           loading: false,
           successMessage: response,
         })
-        console.log(this.state)
       })
       .catch((errorResponse) => {
         console.log('failed to get items');
@@ -64,7 +58,6 @@ export default class SellTicketRejectionScreen extends React.Component{
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
       return value;
     } catch (error){
       throw error
@@ -79,7 +72,8 @@ export default class SellTicketRejectionScreen extends React.Component{
             style={{ padding: 5, alignSelf:'center', fontSize: 40, color: '#228B22'}}
             name='ios-checkmark-circle'
           />
-          <Text style={{fontSize:20}}>{this.state.successMessage.msg}</Text>
+          <Text style={{fontSize:20,  textAlign:'center', padding:10}}>Sell Ticket Successfully Rejected</Text>
+          <Text style={{fontSize:20,  textAlign:'center', paddingBottom:10}}>(Deleted from Database)</Text>
         </View>
       );
     } else {

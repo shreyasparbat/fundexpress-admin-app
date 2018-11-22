@@ -82,7 +82,7 @@ export default class SellTicket extends React.Component {
         <CardItem style={{justifyContent: 'center'}}>
           {/* Ticket Approval Button */}
           <Button
-            style={styles.buttonStyle} 
+            style={styles.buttonStyle}
             onPress={() => this.props.navigation.navigate('EditSellTicket', {
               currentUserID: this.state.currentUserID,
               sellTicketID: this.state.ticketNumber,
@@ -98,7 +98,7 @@ export default class SellTicket extends React.Component {
     return <CardItem/>
   }
   render(){
-    console.log("currentUserID" + this.state.currentUserID);
+    //console.log("currentUserID" + this.state.currentUserID);
     return(
       <View>
             <Card style={{flex: 1}}>

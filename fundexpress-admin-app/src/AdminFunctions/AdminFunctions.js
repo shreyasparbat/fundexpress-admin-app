@@ -23,9 +23,9 @@ export default class AdminFunctionsScreen extends React.Component {
     },
   });
   render() {
-    console.log("Admin Functions Screen");
+    //console.log("Admin Functions Screen");
     const currentUserID = this.props.navigation.getParam('currentUserID');
-    console.log("My Tickets: " + currentUserID);
+    // console.log("My Tickets: " + currentUserID);
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -38,7 +38,7 @@ export default class AdminFunctionsScreen extends React.Component {
         <View style={{flex: 0.4, marginTop: 100, alignSelf: 'center'}}>
           <View style={{ flexDirection: 'row', }}>
             <TouchableOpacity
-                //onPress={() => this.props.navigation.navigate('UpdateInterestRate')}
+              onPress={() => this.props.navigation.navigate('UpdateInterestRate')}
                 activeOpacity= {0.8}
                 style={styles.buttonStyle}
               >

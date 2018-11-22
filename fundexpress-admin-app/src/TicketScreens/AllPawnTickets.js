@@ -23,7 +23,6 @@ class AllPawnTicketsScreen extends React.Component {
 
   render() {
     const currentUserID = this.props.navigation.getParam('currentUserID');
-    console.log('AllPawnTickets currentUserID: ' +  currentUserID);
     return (
       <View style={{flex:1,backgroundColor:'white'}}>
       <Tabs tabBarUnderlineStyle={{backgroundColor:'#bf1e2d'}}>

@@ -24,7 +24,7 @@ export default class SearchBarItem extends Component {
       var currentUser = this.state.users[i];
       if (currentUser.fullName.toLowerCase().includes(this.state.query.toLowerCase())){
         usersToRender.push(currentUser);
-        console.log(usersToRender)
+        //console.log(usersToRender)
       }
 
     }
@@ -61,7 +61,7 @@ export default class SearchBarItem extends Component {
 
   }
   render() {
-    console.log(this.state.users);
+    //console.log(this.state.users);
     return (
       <View>
         <View searchBar rounded style={{flexDirection:"row"}}>

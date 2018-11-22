@@ -26,7 +26,6 @@ export default class RecentTicketsScreen extends React.Component {
   });
   constructor(props){
     super(props)
-    console.log("Recent Tickets Screen");
     this.state={
       data:[],
     }

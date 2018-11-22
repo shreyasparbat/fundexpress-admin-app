@@ -72,6 +72,7 @@ class LoginScreen extends React.Component {
   //url = config.url;
 
   componentWillMount(){
+    this.isLoggedIn()
     this.setState({
       email: '',
       password:'',
@@ -117,7 +118,27 @@ class LoginScreen extends React.Component {
       </View>
     );
   }
-
+  isLoggedIn(){
+    this.retrieveData().then((token) => {
+      fetch(url.url + 'admin/allUsers', {
+      method: 'GET',
+      headers: new Headers({
+        // Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth' : token,
+      }),
+      // body: JSON.stringify({
+      //   auth : token
+      // })
+    })
+      .then((response) => {
+        // console.log(response.ok)
+        if (response.ok) {
+          this.props.navigation.navigate('TicketsMain');
+        }
+      })
+    })
+  }
   onButtonPress() {
     console.log('login pressed')
     console.log(this.state.email)

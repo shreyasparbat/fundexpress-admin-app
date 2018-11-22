@@ -106,7 +106,7 @@ export default class OnboardNewAdminScreen extends React.Component {
   retrieveData2 = async () => {
     try {
       const value = await AsyncStorage.getItem('newAuth');
-      console.log("token retrieved " + value);
+      //console.log("token retrieved " + value);
       return value;
     } catch (error){
       throw error
@@ -169,7 +169,7 @@ export default class OnboardNewAdminScreen extends React.Component {
         //store x-auth in the app cache
         this.storeData('newAuth', res.headers.get('x-auth'));
         this.storeData('ptoken', this.state.ptoken);
-        console.log(this.state.ptoken);
+        //console.log(this.state.ptoken);
         // console.log("Success")
         // console.log(this.state.email + " logged in")
         this.logOut()

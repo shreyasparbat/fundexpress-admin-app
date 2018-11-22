@@ -36,9 +36,7 @@ export default class UserHistoryScreen extends React.Component {
     },
   });
   render() {
-    console.log("User History Screen");
     const currentUserID = this.props.navigation.getParam('currentUserID');
-    console.log("My Tickets: " + currentUserID);
 
     return (
       <View style={{flex: 1, backgroundColor: 'white'}}>

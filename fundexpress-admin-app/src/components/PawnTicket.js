@@ -157,7 +157,7 @@ export default class PawnTicket extends React.Component {
 
 
   render(){
-    console.log("currentUserID" + this.state.currentUserID);
+    
     return(
       <View>
             <Card style={{flex: 1}}>

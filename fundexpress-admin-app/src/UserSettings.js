@@ -28,7 +28,6 @@ export default class UserSettingsScreen extends React.Component {
   });
   constructor(props){
     super(props)
-    console.log("User Settings Screen");
     this.state={
         email: '',
         password: '',
@@ -55,17 +54,12 @@ export default class UserSettingsScreen extends React.Component {
         error:'',
         showAlert: false,
     }
-    console.log("1. User Settings Screen initialised: " + this.state)
   }
   componentWillMount(){
-    console.log("2. call retrieve data");
 
     this.setState({loading:true});
     this.retrieveData().then((auth) => {
-      console.log("auth: " + auth)
-      console.log("currentUserID: " +this.state.currentUserID)
-    fetch(url.url + 'admin/getUser/',{ //fetch from admin url
-    //fetch('http://206.189.145.2:3000/admin/getUser/',{ //fetch from admin url
+    fetch(url.url + 'admin/getUser/',{
       method: 'POST',
       headers: {
         //Accept: 'application/json',
@@ -77,13 +71,10 @@ export default class UserSettingsScreen extends React.Component {
       }),
     })
     .then((response) => {
-      console.log("4. response.ok: " + response.ok);
-      console.log("5. response: " + response)
      return response.json()
       // return response
     })
     .then((response) => {
-      console.log("6. set state");
       if (response.registrationCompleted==true){
         this.setState({
           email: response.email,
@@ -123,9 +114,7 @@ export default class UserSettingsScreen extends React.Component {
         })
       }
 
-      console.log("7. finished setting state")
-      console.log(this.state.email)
-      console.log(this.state.fullName)
+
     })
     .catch((error) => {
       console.log("error")
@@ -139,7 +128,6 @@ export default class UserSettingsScreen extends React.Component {
   retrieveData = async () => {
     try{
       const value = await AsyncStorage.getItem('auth');
-      console.log("3. value")
       return value;
     } catch (error) {
       console.log(error)
@@ -199,7 +187,6 @@ export default class UserSettingsScreen extends React.Component {
         }),
       })
       .then((response) => {
-        console.log("4. response.ok: " + response.ok)
         if(response.ok){
           this.setState({
             error: 'User successfully updated',
@@ -328,8 +315,6 @@ export default class UserSettingsScreen extends React.Component {
             name='mobileNumber'
             onChangeText={mobileNumber => this.setState({ mobileNumber })}
             value={this.state.mobileNumber.toString()}
-            //value={this.state.mobileNumber}
-            //placeholder='Mobile Number'
           />
         </View>
 
@@ -339,8 +324,6 @@ export default class UserSettingsScreen extends React.Component {
           <FormInput
             onChangeText={landlineNumber => this.setState({ landlineNumber })}
             value={this.state.landlineNumber.toString()}
-            //value={this.state.landlineNumber}
-            //placeholder='Home Phone Number'
           />
         </View>
 
@@ -468,7 +451,8 @@ export default class UserSettingsScreen extends React.Component {
           containerViewStyle={{marginTop:30,marginBottom:30}}
         />
         <AwesomeAlert
-            style={{modalContainer:{flex:5}}}
+            overlayStyle={{height:'300%'}}
+            alertContainerStyle={{justifyContent:'flex-end', marginBottom:50}}
             show= {this.state.showAlert}
             title="User Settings"
             message={this.state.error}

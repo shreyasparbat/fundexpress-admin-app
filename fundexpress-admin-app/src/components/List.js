@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, AsyncStorage, ActivityIndicator } from 'react-native';
+import { View, Text, AsyncStorage, ActivityIndicator, RefreshControl, ScrollView} from 'react-native';
 import UserListDivider from './UserListDivider';
 import url from '../constants/url';
 
@@ -9,17 +9,48 @@ export default class List extends React.Component {
   }
   constructor(props){
     super(props)
-    console.log("1. construction of List");
+
     this.state={
       arrayOfUsers: [],
       loading: false,
-      navigation: props.navigation
+      navigation: props.navigation,
+      refreshing: false,
+
     }
-    console.log("2. this state is initialised");
+
 
   }
+  refresh(){
+    
+    this.setState({refreshing: true});
+
+    this.retrieveData().then((token) =>{
+      fetch(url.url + 'admin/allUsers', {
+      method: 'GET',
+      headers: new Headers({
+        'x-auth' : token,
+      })
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          return Promise.reject(response.json())
+        }
+      })
+      .then((responseJson) => {
+        this.setState({arrayOfUsers : responseJson.allUsers});
+        this.setState({refreshing:false});
+      })
+      .catch((errorResponse) => {
+        console.log('failed to get items');
+      })
+    }).catch((error) => {
+      console.log("error retrieving data");
+    });
+  }
   componentWillMount(){
-    console.log("3. set the state method");
+
     this.setState({loading: true});
 
     this.retrieveData().then((token) =>{
@@ -51,7 +82,7 @@ export default class List extends React.Component {
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
+
       return value;
     } catch (error){
       throw error
@@ -59,7 +90,7 @@ export default class List extends React.Component {
   }
 
   renderThisArray(){
-    console.log("5. rendering the array");
+
     return <UserListDivider navigation={this.state.navigation} userList={this.state.arrayOfUsers.sort()}/>
   }
 
@@ -68,9 +99,14 @@ export default class List extends React.Component {
       return <ActivityIndicator/>;
     }
     return(
-      <View>
+      <ScrollView
+      style={{flex: 1, backgroundColor: 'white'}}
+      refreshControl={<RefreshControl
+      refreshing={this.state.refreshing}
+      onRefresh={()=>this.refresh()} />}
+      >
           {this.renderThisArray()}
-      </View>
+      </ScrollView>
     );
   }
 }

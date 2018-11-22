@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator, AsyncStorage} from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, ActivityIndicator, AsyncStorage, RefreshControl} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PawnTicket from './components/PawnTicket';
 import LogOutButton from './components/LogOutButton';
@@ -24,25 +24,13 @@ export default class RecentPawnTicketsScreen extends React.Component {
   });
   constructor(props){
     super(props)
-    console.log("Recent Tickets Screen");
     this.state={
       data:[],
-      navigation: props.navigation
+      navigation: props.navigation,
+      refreshing: false
     }
   }
-
-  retrieveData = async () => {
-    try{
-      const value = await AsyncStorage.getItem('auth');
-      console.log('2. auth retrieved: ' + value)
-      return value;
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  retrieveTickets(){
-    console.log("start of retrieveTickets in /admin/getTicketsPendingApproval")
+  refresh(){
     //normal client retrieve tickets
     this.retrieveData().then((auth) => {
     fetch(url.url + 'admin/getTicketsPendingApproval',{
@@ -54,11 +42,47 @@ export default class RecentPawnTicketsScreen extends React.Component {
       })
     })
     .then((response) => {
-      console.log("response.ok: " + response.ok);
       return response.json()
     })
     .then((response) => {
-      console.log("/tickets Success");
+      this.setState({
+        data: response.pawnTicketsPendingApproval.sort(function(a,b){
+          a = new Date(a.dateCreated);
+          b = new Date(b.dateCreated);
+          return a>b ? -1 : a<b ? 1 : 0;
+        }),
+        refreshing:false
+      })
+    })
+    .catch((error) => {
+      console.log("error")
+      console.log(error)
+    })
+  })
+  }
+  retrieveData = async () => {
+    try{
+      const value = await AsyncStorage.getItem('auth');
+      return value;
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  retrieveTickets(){
+    //normal client retrieve tickets
+    this.retrieveData().then((auth) => {
+    fetch(url.url + 'admin/getTicketsPendingApproval',{
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'x-auth' : auth
+      })
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
       this.setState({
         data: response.pawnTicketsPendingApproval.sort(function(a,b){
           a = new Date(a.dateCreated);
@@ -67,7 +91,6 @@ export default class RecentPawnTicketsScreen extends React.Component {
         }),
         loading:false
       })
-      console.log("first item in TicketsPendingApproval array: " + response.pawnTicketsPendingApproval[0]);
     })
     .catch((error) => {
       console.log("error")
@@ -105,7 +128,12 @@ export default class RecentPawnTicketsScreen extends React.Component {
   render() {
 
     return (
-      <ScrollView style={{flex: 1, backgroundColor: 'white'}}>
+      <ScrollView
+        style={{flex: 1, backgroundColor: 'white'}}
+        refreshControl={<RefreshControl
+        refreshing={this.state.refreshing}
+        onRefresh={()=>this.refresh()} />}
+      >
         {this.renderTickets()}
       </ScrollView>
     );

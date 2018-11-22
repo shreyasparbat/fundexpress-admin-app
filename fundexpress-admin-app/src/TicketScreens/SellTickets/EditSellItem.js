@@ -118,7 +118,7 @@ export default class EditSellItemScreen extends React.Component{
             modalTransparent={false}
             animationType={"fade"}
             androidMode={"default"}
-            placeHolderText="Select Date Of Purchase"
+            placeHolderText={this.state.dateOfPurchase}
             textStyle={{ color: "black" }}
             placeHolderTextStyle={{ color: "#c7c7cd" }}
             onDateChange={dateOfPurchase => this.setState({ dateOfPurchase })}

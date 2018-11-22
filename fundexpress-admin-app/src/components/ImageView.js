@@ -31,7 +31,7 @@ export default class ImageView extends React.Component{
           <ImageViewer
             imageUrls={[{url:this.state.frontUri},{url:this.state.backUri}]}
             onSwipeDown={() => {
-              console.log('onSwipeDown');
+              
               if(this.state.isPawnTicket==true){
                   this.props.navigation.navigate('EditPawnTicket');
               } else {

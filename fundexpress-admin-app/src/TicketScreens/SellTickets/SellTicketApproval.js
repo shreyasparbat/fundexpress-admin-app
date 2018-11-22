@@ -27,29 +27,10 @@ export default class SellTicketApprovalScreen extends React.Component{
       currentUserID: this.props.navigation.getParam('currentUserID'),
       nameOfPreviousPage: this.props.navigation.getParam('nameOfPreviousPage'),
     }
-    console.log(this.state.editedTicketState);
-    console.log("1. this state is initialised");
   }
 
   componentWillMount(){
     this.setState({loading: true});
-    console.log('2. componentWillMount and set loading');
-    console.log("3. the body is {" +
-      "sellTicketID" + this.state.editedTicketState.sellTicketID+
-      "item"+ this.state.editedTicketState.item+
-      "dateCreated"+ this.state.editedTicketState.dateCreated+
-      "expiryDate"+ this.state.editedTicketState.expiryDate+
-      "gracePeriodEndDate"+ this.state.editedTicketState.gracePeriodEndDate+"\r\n" +
-      "indicativeTotalInterestPayable"+ this.state.editedTicketState.indicativeTotalInterestPayable+"\r\n" +
-      "value"+ this.state.editedTicketState.value+"\r\n" +
-      "approved"+ this.state.editedTicketState.approved+"\r\n" +
-      "closed"+ this.state.editedTicketState.closed+"\r\n" +
-      "expired"+ this.state.editedTicketState.expired+"\r\n" +
-      "outstandingPrincipal"+ this.state.editedTicketState.outstandingPrincipal+"\r\n" +
-      "outstandingInterest"+ this.state.editedTicketState.outstandingInterest+ "\r\n" + "}"
-    );
-    //continue
-
     const pendingSellTicket = this.props.navigation.getParam('editedTicketState');
 
     this.setState({loading: true})
@@ -71,12 +52,14 @@ export default class SellTicketApprovalScreen extends React.Component{
       )
     })
     .then((response) => {
-      console.log("response.ok: " + response.ok)
       return response.ok
     })
     .then((response) => {
-      console.log(response)
-      if(response){
+      if (response.error!=null){
+        this.setState({
+          successMessage: response.error
+        })
+      } else if(response==true){
         this.setState({
           successMessage: 'Sell Ticket Successfully Approved',
         })
@@ -84,7 +67,6 @@ export default class SellTicketApprovalScreen extends React.Component{
       this.setState({
         loading: false,
       })
-      console.log(this.state)
     })
     .catch((errorResponse) => {
       console.log('failed to get items');
@@ -98,7 +80,6 @@ export default class SellTicketApprovalScreen extends React.Component{
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('auth');
-      console.log("4. token retrieved " + value);
       return value;
     } catch (error){
       throw error

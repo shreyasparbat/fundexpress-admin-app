@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, StyleSheet, Text, View, ScrollView, ImageBackground, Image, ActivityIndicator} from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, ScrollView, ImageBackground, Image, ActivityIndicator, RefreshControl} from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import LogOutButton from '../components/LogOutButton';
 import { Icon } from 'native-base';
@@ -33,7 +33,44 @@ export default class UpdateInterestRateScreen extends React.Component {
         loading:false,
         error:'',
         showAlert: false,
+        refreshing: false
     }
+  }
+  refresh(){
+    this.setState({refreshing:true})
+    this.retrieveData().then((auth) => {
+
+    fetch(url.url + 'adminViews/getInterestRate/',{ //fetch from admin url
+      method: 'GET',
+      headers: {
+        //Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-auth': auth,
+      },
+    })
+    .then((response) => {
+      console.log("3. response.ok: " + response.ok);
+
+     return response.json()
+      // return response
+    })
+    .then((response) => {
+
+      this.setState({
+        firstMonthRate: response[0].firstMonthRate,
+        normalRate: response[0].normalRate,
+        dateUpdated: response[0].dateUpdated,
+        currentFirstMonthRate:response[0].firstMonthRate,
+        currentNormalRate:response[0].normalRate,
+        refreshing:false
+      })
+
+    })
+    .catch((error) => {
+      console.log("error with adminViews/getInterestRate")
+      console.log(error)
+    })
+  })
   }
   componentWillMount(){
 
@@ -139,9 +176,13 @@ export default class UpdateInterestRateScreen extends React.Component {
       return <ActivityIndicator/>;
     }
     return(
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+        refreshControl={<RefreshControl
+        refreshing={this.state.refreshing}
+        onRefresh={()=>this.refresh()} />}
+      >
         <View style={{padding:5, alignItems:'center'}}>
-          <Text style={{fontWeight:'bold', fontSize:20}}>{this.state.title}</Text>
           <Text style={{fontSize:14, paddingBottom: 5}}>Last Updated: {this.state.dateUpdated}</Text>
           <Text style={{ fontSize:14}}>Current First Month Rate: {this.state.currentFirstMonthRate}</Text>
           <Text style={{fontSize:14}}>Current Normal Rate: {this.state.currentNormalRate}</Text>
@@ -153,7 +194,7 @@ export default class UpdateInterestRateScreen extends React.Component {
           <FormInput
             name='firstMonthRate'
             onChangeText={firstMonthRate => this.setState({ firstMonthRate })}
-            value={this.state.firstMonthRate.toString()}
+            value={this.state.firstMonthRate}
           />
         </View>
 
@@ -163,7 +204,7 @@ export default class UpdateInterestRateScreen extends React.Component {
           <FormInput
             name='normalRate'
             onChangeText={normalRate => this.setState({ normalRate })}
-            value={this.state.normalRate.toString()}
+            value={this.state.normalRate}
           />
         </View>
 
@@ -177,7 +218,7 @@ export default class UpdateInterestRateScreen extends React.Component {
           containerViewStyle={{marginTop:30,marginBottom:30}}
         />
         <AwesomeAlert
-            style={{modalContainer:{flex:5}}}
+            overlayStyle={{height:'300%'}}
             show= {this.state.showAlert}
             title="Interest Rate Update Status"
             message={this.state.error}
@@ -193,7 +234,7 @@ export default class UpdateInterestRateScreen extends React.Component {
             }}
         />
 
-      </View>
+      </ScrollView>
     );
   }
 }

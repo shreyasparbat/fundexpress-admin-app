@@ -249,7 +249,6 @@ getDateObject(date){
             <FormInput
               name='value'
               onChange={value => this.setState({ value })}
-              keyboardType={'phone-pad'}
               value={ticket.value.toString()}
             />
           </View>

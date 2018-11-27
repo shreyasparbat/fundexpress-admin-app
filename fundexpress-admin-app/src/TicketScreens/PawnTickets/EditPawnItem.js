@@ -140,13 +140,13 @@ export default class EditPawnItemScreen extends React.Component{
           <FormLabel>Date Of Purchase</FormLabel>
           <DatePicker
             name='dateOfPurchase'
-            defaultDate={new Date(this.state.gracePeriodEndDate)}
+            defaultDate={new Date(this.state.dateOfPurchase)}
             style={{marginLeft:15}}
             locale={"SGP"}
             modalTransparent={false}
             animationType={"fade"}
             androidMode={"default"}
-            placeHolderText={this.state.gracePeriodEndDate}
+            placeHolderText={this.state.dateOfPurchase}
             textStyle={{ color: "black" }}
             placeHolderTextStyle={{ color: "#c7c7cd" }}
             onDateChange={dateOfPurchase => this.setState({ dateOfPurchase })}

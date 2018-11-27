@@ -133,17 +133,15 @@ export default class UpdateInterestRateScreen extends React.Component {
           'x-auth': token,
         }),
         body: JSON.stringify({
-          "firstMonthRate" :this.state.firstMonthRate,
-          "normalRate": this.state.normalRate,
+          "firstMonthRate" :parseFloat(this.state.firstMonthRate),
+          "normalRate": parseFloat(this.state.normalRate),
         }),
       })
       .then((response) => {
         console.log("4. response.ok: " + response.ok)
         if(response.ok){
           this.setState({
-            firstMonthRate: response.firstMonthRate,
-            normalRate: response.normalRate,
-            error: 'Interest Rate successfully updated',
+            error: 'Successfully updated! Pull to refresh',
             showAlert:true
           })
         } else {
@@ -190,11 +188,11 @@ export default class UpdateInterestRateScreen extends React.Component {
         </View>
         {/* initialLtvPercentage */}
         <View style={{height:70,borderBottomColor:"black", backgroundColor: 'white', alignSelf: 'flex-start', width: '100%'}} >
-          <FormLabel>Current First Month Rate</FormLabel>
+          <FormLabel>First Month Rate</FormLabel>
           <FormInput
             name='firstMonthRate'
             onChangeText={firstMonthRate => this.setState({ firstMonthRate })}
-            value={this.state.firstMonthRate}
+            value={''+this.state.firstMonthRate}
           />
         </View>
 
@@ -204,7 +202,7 @@ export default class UpdateInterestRateScreen extends React.Component {
           <FormInput
             name='normalRate'
             onChangeText={normalRate => this.setState({ normalRate })}
-            value={this.state.normalRate}
+            value={''+this.state.normalRate}
           />
         </View>
 

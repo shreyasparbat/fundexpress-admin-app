@@ -337,7 +337,6 @@ getDateObject(date){
               //   value => this.setState({ value })
               // }}
               onChangeText={ value => this.setState({ value })}
-              keyboardType={'phone-pad'}
               value={this.state.value.toString()}
               //value={this.state.value}
             />
@@ -357,7 +356,6 @@ getDateObject(date){
               //   outstandingPrincipal => this.setState({ outstandingPrincipal })
               // }}
               onChangeText={ outstandingPrincipal => this.setState({ outstandingPrincipal })}
-              keyboardType={'phone-pad'}
               value={this.state.outstandingPrincipal.toString()}
               //value={this.state.outstandingPrincipal}
             />
@@ -373,7 +371,6 @@ getDateObject(date){
               //   outstandingInterest => this.setState({ outstandingInterest })
               // }}
               onChangeText={ outstandingInterest => this.setState({ outstandingInterest })}
-              keyboardType={'phone-pad'}
               value={this.state.outstandingInterest.toString()}
               //value={this.state.outstandingInterest}
             />

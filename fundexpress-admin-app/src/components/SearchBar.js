@@ -63,7 +63,8 @@ export default class SearchBarItem extends Component {
   render() {
     //console.log(this.state.users);
     return (
-      <View>
+
+      <ScrollView style={{flex:1}}>
         <View searchBar rounded style={{flexDirection:"row"}}>
 
             <InputGroup style={{width:"80%"}}>
@@ -82,20 +83,18 @@ export default class SearchBarItem extends Component {
         {
           this.state.results.map((result) => {
             return (
-              <ScrollView>
-                <ListItem>
-                  <Text key={result._id} onPress={() => {
+                <ListItem key={result._id}>
+                  <Text onPress={() => {
                       this.state.navigation.navigate('UserHistory', {currentUser: result})
                     }
                   }>
                     {typeof result === 'object' && !(result instanceof Array) ? result.fullName : result.toString()}
                   </Text>
                 </ListItem>
-              </ScrollView>
             );
           })
         }
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -30,8 +30,10 @@ export default class UserListItem extends Component {
     var result = [];
     var max = userList.length
     for (i=0; i<max;i++){
-      var firstLetter= userList[i].fullName.substring(0,1);
+      var firstLetter= userList[i].fullName.substring(0,1).toUpperCase();
       if (firstLetter===letter){
+        result.push(userList[i]);
+      } else if (letter==='#'){
         result.push(userList[i]);
       }
     }
@@ -50,7 +52,7 @@ export default class UserListItem extends Component {
       // console.log(currentUser);
       return (
           <TouchableOpacity>
-            <ListItem  onPress={() => this.state.navigation.navigate('UserHistory', {currentUserID: currentUser._id})}> 
+            <ListItem  onPress={() => this.state.navigation.navigate('UserHistory', {currentUserID: currentUser._id})}>
               <Text>{currentUser.fullName}</Text>
             </ListItem>
           </TouchableOpacity>

@@ -31,11 +31,11 @@ export default class SellTicket extends React.Component {
     }
   }
   getFrontURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.png';
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.jpg';
     return uri;
   }
   getBackURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.png';
+    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.jpg';
     return uri;
   }
   componentWillMount(){

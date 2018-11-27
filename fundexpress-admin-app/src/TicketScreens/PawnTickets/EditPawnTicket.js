@@ -321,7 +321,6 @@ getDateObject(date){
               //   indicativeTotalInterestPayable => this.setState({ indicativeTotalInterestPayable })
               // }}
               onChangeText={ indicativeTotalInterestPayable => this.setState({ indicativeTotalInterestPayable })}
-              keyboardType={'phone-pad'}
               value={this.state.indicativeTotalInterestPayable.toString()}
               //value={this.state.indicativeTotalInterestPayable}
             />

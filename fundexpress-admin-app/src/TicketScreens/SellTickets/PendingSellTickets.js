@@ -100,14 +100,14 @@ class PendingSellTickets extends React.Component {
     this.retrieveTickets()
   }
 
-  getFrontURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.png';
-    return uri;
-  }
-  getBackURI(ticketID){
-    var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.png';
-    return uri;
-  }
+  // getFrontURI(ticketID){
+  //   var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_front.jpg';
+  //   return uri;
+  // }
+  // getBackURI(ticketID){
+  //   var uri = 'https://fundexpress-api-storage.sgp1.digitaloceanspaces.com/item-images/'+ticketID+ '_back.jpg';
+  //   return uri;
+  // }
 
   renderTickets(){
     return this.state.data.map(ticket =>
@@ -116,8 +116,8 @@ class PendingSellTickets extends React.Component {
       data={ticket}
       currentUserID={this.state.currentUserID}
       navigation={this.state.navigation}
-      frontUri={this.getFrontURI(ticket._id)}
-      backUri={this.getBackURI(ticket._id)}
+      // frontUri={this.getFrontURI(ticket._id)}
+      // backUri={this.getBackURI(ticket._id)}
       nameOfPreviousPage='UserHistory'
     />
     );

@@ -9,6 +9,7 @@ import { Icon, Picker, DatePicker, Form, CardItem} from "native-base";
 export default class EditPawnItemScreen extends React.Component{
   static navigationOptions = {
     title: 'Edit Item',
+    headerLeft:null,
     headerStyle: {
       backgroundColor: '#bf1e2d',
     },
